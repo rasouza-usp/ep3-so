@@ -1,6 +1,9 @@
 import os
+import sys
 
 while(True):
     # cntrl-c to quit
-    input = raw_input('[ep03-so]$ ')
-    input = input.split()
+    command = raw_input('[ep03-so]$ ')
+    if command == "exit":
+        sys.exit(0)
+    command = command.split()
