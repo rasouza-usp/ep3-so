@@ -47,13 +47,15 @@ def carrega(arquivo):
         if line[1] != "COMPACTAR":
             p = Processo(line[0], line[1], line[2], line[3], line[4:]) # Cria um processo
             processos.append((line[0],p)) # Coloca na lista de processos
+            #debug
+            print p.acessos
         else:
             processos.append((line[0], line[1]))
 
 def terminal():
     while(True):
         command = (raw_input('[ep3]: ')).strip().split()
-    
+        print command 
         if command[0] == "sai": sys.exit(0)
         if command[0] == "carrega": carrega(command[1])
         if command[0] == "espaco": set_espaco(command[1])
