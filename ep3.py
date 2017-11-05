@@ -48,7 +48,7 @@ def main ():
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
-    ex.executa(1,processos)
+    ex.simula(1,processos)
     #mem_fisica = open("/tmp/ep3.mem", "wb")
     #mem_virtual = open("/tmp/ep3.vir", "wb")
 
@@ -97,7 +97,7 @@ def terminal():
         if command[0] == "carrega": carrega(command[1])
         if command[0] == "espaco": set_espaco(command[1])
         if command[0] == "substitui": set_substitui(command[1])
-        if command[0] == "executa": ex.executa(command[1],processos)
+        if command[0] == "executa": ex.simula(command[1],processos)
 
 if __name__ == "__main__":
     main()
