@@ -43,8 +43,6 @@ def main ():
     # DEBUG ---
     carrega(sys.argv[1])
     print vars(processos[0][1])
-    print vars(processos[1][1])
-    print vars(processos[3][1])
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
