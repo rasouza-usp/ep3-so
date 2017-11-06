@@ -23,3 +23,6 @@ def worst_fit():
 
 def quick_fit():
     print 'quick fit'
+
+def compactar():
+    print 'compactando memoria'
