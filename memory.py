@@ -1,15 +1,13 @@
 # algoritmos de gerencia de espaco livre
-#https://pypi.python.org/pypi/bitarray
-from bitarray import bitarray
 
-## a memoria sera simulada com um bitarray
+# o controle de espaco livre tem que ser feito com lista ligada: ver aula15.pdf
+# Nao vai dar pra usar o bitmap
 
 class Memory:
     def __init__ (self, total, s, p, filename):
         self.tamanho = total
         self.s = s
         self.p = p
-        self.memoria = bitarray(total)
         self.memfile = open (filename,"wb")
 
     def __del__ (self):
