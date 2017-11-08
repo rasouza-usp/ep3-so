@@ -45,7 +45,7 @@ def main ():
     print vars(processos[0][1])
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
-    mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
+    mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     ex.simula(1,processos)
     #mem_fisica = open("/tmp/ep3.mem", "wb")
     #mem_virtual = open("/tmp/ep3.vir", "wb")

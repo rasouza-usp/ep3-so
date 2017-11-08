@@ -9,6 +9,10 @@ class Memory:
         self.s = s
         self.p = p
         self.memfile = open (filename,"wb")
+        #define tamanho do arquivo binario em bytes
+        self.memfile.seek(self.tamanho-1)
+        self.memfile.write("\0")
+        self.memfile.close()
 
     def __del__ (self):
         self.memfile.close()
