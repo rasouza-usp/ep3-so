@@ -2,6 +2,7 @@
 
 # o controle de espaco livre tem que ser feito com lista ligada: ver aula15.pdf
 # Nao vai dar pra usar o bitmap
+from struct import pack
 
 class Memory:
     def __init__ (self, total, s, p, filename):
@@ -10,11 +11,10 @@ class Memory:
         self.p = p
         self.memfile = open (filename,"wb")
         #define tamanho do arquivo binario em bytes
-        #self.memfile.seek(self.tamanho-1)
-        #self.memfile.write("\0")
         for i in range(self.tamanho):
-            self.memfile.write("10000001\n")
-        #self.memfile.write("\0")
+            self.memfile.write(pack('i',-1))
+        self.memfile.seek(self.tamanho-1)
+        self.memfile.write("\0")
         self.memfile.close()
 		
     def __del__ (self):
