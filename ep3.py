@@ -8,6 +8,7 @@ from processo import *
 from memory import *
 import paging as pg
 import execute as ex
+import readline
 
 # Globals
 memoria = {
@@ -41,8 +42,8 @@ def main ():
 
 
     # DEBUG ---
-    carrega(sys.argv[1])
-    print vars(processos[0][1])
+    #carrega(sys.argv[1])
+    #print vars(processos[0][1])
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
@@ -76,7 +77,11 @@ def carrega(arquivo):
 
     # Define parametros da memória
     memoria["total"], memoria["virtual"], memoria["s"], memoria["p"] = f.readline().split()
-
+    
+    #Cria os arquivos de memoria
+    mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
+    mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
+	
     # Timeline dos processos na memória
     for line in f: 
         line = line.split()
