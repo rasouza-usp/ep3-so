@@ -27,6 +27,9 @@ paginacao = {1: 'Optimal',
              4: 'Least Recently Used v4'
 }
 
+#COMO DEIXAR AS VARIAVEIS DE MEMORIA COMO GLOBAIS
+#mem_fisica = Memory(0,0,0,"")
+#mem_virtual = Memory(0,0,0,"")
 processos = [] # Lista de processos na forma (t0, Processo)
 espaco = 1 # Algoritmo de gerenciamento espaço livre
 substitui = 1 # Algoritmo de substituição de páginas
@@ -81,6 +84,9 @@ def carrega(arquivo):
     #Cria os arquivos de memoria
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
+    
+    #mem_fisica.lista.show()
+    #mem_virtual.lista.show()
 	
     # Timeline dos processos na memória
     for line in f: 
@@ -90,6 +96,7 @@ def carrega(arquivo):
             processos.append((line[0],p)) # Coloca na lista de processos
         else:
             processos.append((line[0], line[1]))
+    f.close()
 
 
 def terminal():
@@ -97,7 +104,7 @@ def terminal():
         command = (raw_input('[ep3]: ')).strip().split()
         print command 
         if command[0] == "sai": sys.exit(0)
-        if command[0] == "carrega": carrega(command[1])
+        if command[0] == "carrega":carrega(command[1])
         if command[0] == "espaco": set_espaco(command[1])
         if command[0] == "substitui": set_substitui(command[1])
         if command[0] == "executa": ex.simula(command[1],processos)
