@@ -18,4 +18,4 @@ class Processo:
     def setAcessos(self, acessos):
         """ Pega o vetor de acessos a memória e organiza em pares (pn,tn) """
         acessos = map (int,acessos)
-        self.acessos = zip(*[iter(acessos)]*2) # TODO: Converter as strings para inteiros: Done
+        self.acessos = zip(*[iter(acessos)]*2) 

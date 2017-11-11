@@ -34,8 +34,6 @@ processos = [] # Lista de processos na forma (t0, Processo)
 espaco = 1 # Algoritmo de gerenciamento espaço livre
 substitui = 1 # Algoritmo de substituição de páginas
 
-
-
 ### MAIN
 def main ():
     if len(sys.argv) == 1: 
@@ -43,13 +41,13 @@ def main ():
     elif len(sys.argv) != 4: 
         help() # Executar sem todos os argumentos necessários mostra ajuda
 
-
     # DEBUG ---
-    #carrega(sys.argv[1])
+    carrega(sys.argv[1])
     #print vars(processos[0][1])
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
+    mem_fisica.dump('/tmp/ep3.mem')
     ex.simula(1,processos)
     #mem_fisica = open("/tmp/ep3.mem", "wb")
     #mem_virtual = open("/tmp/ep3.vir", "wb")
@@ -85,7 +83,7 @@ def carrega(arquivo):
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
-    #mem_fisica.lista.show()
+    mem_fisica.lista.show()
     #mem_virtual.lista.show()
 	
     # Timeline dos processos na memória
