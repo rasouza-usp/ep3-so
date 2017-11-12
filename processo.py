@@ -25,9 +25,9 @@ class Processo:
     def set_ocupa(self,s):
         b = self.get_b
         if(b % s) == 0:
-		    self.ocupa = b/s
+            self.ocupa = b/s
         else:
-		    self.ocupa = b/s + 1
+            self.ocupa = b/s + 1
 
     def setAcessos(self, acessos):
         """ Pega o vetor de acessos a memória e organiza em pares (pn,tn) """
