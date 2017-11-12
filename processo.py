@@ -18,6 +18,9 @@ class Processo:
          
     def get_b(self):
         return self.b
+        
+    def get_ocupa(self):
+        return self.ocupa
 
     def set_ocupa(self,s):
 		b = self.get_b
