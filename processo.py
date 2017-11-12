@@ -8,13 +8,23 @@ class Processo:
         self.tf = int(tf)
         self.b = int(b)
         self.nome = nome
-        self.started = 0
+        self.ocupa = 0
         self.setpid()
         self.setAcessos(acessos)
 
     def setpid(self):
         self.pid = Processo.current_pid
         Processo.current_pid += 1
+         
+    def get_b(self):
+        return self.b
+
+    def set_ocupa(self,s):
+		b = self.get_b
+		if(b % s) == 0:
+		    self.ocupa = b/s
+		else:
+			self.ocupa = b/s + 1
 
     def setAcessos(self, acessos):
         """ Pega o vetor de acessos a memória e organiza em pares (pn,tn) """
