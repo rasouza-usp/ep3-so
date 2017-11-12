@@ -92,6 +92,7 @@ def carrega(arquivo):
         line = line.split()
         if line[1] != "COMPACTAR":
             p = Processo(line[0], line[1], line[2], line[3], line[4:]) # Cria um processo
+            #p.set_ocupa(memoria["s"])
             processos.append((line[0],p)) # Coloca na lista de processos
         else:
             processos.append((line[0], line[1]))
