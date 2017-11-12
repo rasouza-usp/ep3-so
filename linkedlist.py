@@ -2,8 +2,8 @@ class Node(object):
 
     def __init__(self, data, inicio, tamanho, next_node=None):
         self.data = data           # L se eh um noh livre e P se tem processo
-        self.inicio = inicio       # Em que posicao comeca
-        self.tamanho = tamanho     # Tamanho ocupado
+        self.inicio = int(inicio)       # Em que posicao comeca
+        self.tamanho = int(tamanho)     # Tamanho ocupado
         self.next_node = next_node # Proximo noh
 
     def get_data(self):
@@ -19,6 +19,10 @@ class Node(object):
         return self.next_node
 
     def set_next(self, new_next):
+        self.next_node = new_next
+    
+    def show(self):
+		print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho, "\n"
         self.next_node = new_next
 
 class LinkedList(object):
