@@ -23,11 +23,11 @@ class Processo:
         return self.ocupa
 
     def set_ocupa(self,s):
-		b = self.get_b
-		if(b % s) == 0:
+        b = self.get_b
+        if(b % s) == 0:
 		    self.ocupa = b/s
-		else:
-			self.ocupa = b/s + 1
+        else:
+		    self.ocupa = b/s + 1
 
     def setAcessos(self, acessos):
         """ Pega o vetor de acessos a memória e organiza em pares (pn,tn) """
