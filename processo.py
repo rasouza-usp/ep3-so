@@ -8,6 +8,7 @@ class Processo:
         self.tf = int(tf)
         self.b = int(b)
         self.nome = nome
+        self.started = 0
         self.setpid()
         self.setAcessos(acessos)
 

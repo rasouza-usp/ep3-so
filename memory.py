@@ -37,9 +37,9 @@ class Memory:
 #varre a lista liga e procura o menor espaco vazio para alocar o processo
 def best_fit(mem_virtual,b):
     print 'best fit'
-	current = mem_virtual.head
-	posicao = current
-	while current:
+    current = mem_virtual.head
+    posicao = current
+    while current:
 		if current.get_data() == 'L' and current.get_tamanho() >=  b and current.get_tamanho < posicao.get_tamanho():
 			posicao = current
 		current = current.get_next()

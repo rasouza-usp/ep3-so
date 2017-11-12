@@ -22,7 +22,7 @@ class Node(object):
         self.next_node = new_next
     
     def show(self):
-		print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho, "\n"
+        print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho, "\n"
         self.next_node = new_next
 
 class LinkedList(object):

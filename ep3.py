@@ -27,9 +27,6 @@ paginacao = {1: 'Optimal',
              4: 'Least Recently Used v4'
 }
 
-#COMO DEIXAR AS VARIAVEIS DE MEMORIA COMO GLOBAIS
-#mem_fisica = Memory(0,0,0,"")
-#mem_virtual = Memory(0,0,0,"")
 processos = [] # Lista de processos na forma (t0, Processo)
 espaco = 1 # Algoritmo de gerenciamento espaço livre
 substitui = 1 # Algoritmo de substituição de páginas
