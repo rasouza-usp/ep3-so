@@ -47,9 +47,9 @@ def best_fit(mem_virtual,p):
 
     #varre a lista e pega a menor posicao de tramanho livre em 'posicao'
     while current:
-		if current.get_data() == 'L' and current.get_tamanho() >=  ocupa and current.get_tamanho < posicao.get_tamanho():
-			posicao = current
-		current = current.get_next()
+        if current.get_data() == 'L' and current.get_tamanho() >=  ocupa and current.get_tamanho < posicao.get_tamanho():
+            posicao = current
+        current = current.get_next()
 	
 	#Caso a posiacao encontrada seja maior do que o suficiente
 	if(posicao.get_tamanho > ocupa):
