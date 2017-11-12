@@ -1,10 +1,11 @@
 class Node(object):
 
-    def __init__(self, data, inicio, tamanho, next_node=None):
+    def __init__(self, data, inicio, tamanho, next_node):
         self.data = data           # L se eh um noh livre e P se tem processo
         self.inicio = int(inicio)       # Em que posicao comeca
         self.tamanho = int(tamanho)     # Tamanho ocupado
         self.next_node = next_node # Proximo noh
+        self.previous_node = None #No anterior
 
     def get_data(self):
         return self.data
@@ -17,9 +18,22 @@ class Node(object):
         
     def get_next(self):
         return self.next_node
+        
+    def get_previous(self):
+        return self.previous_node
 
+    def set_data(self, data):
+        self.data = data
+    
+    def set_inicio(self, inicio):
+        self.inicio = inicio
+        
+    def set_tamanho(self, tam):
+        self.tamanho = tam
+        
     def set_next(self, new_next):
         self.next_node = new_next
+        
     
     def show(self):
         print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho, "\n"
