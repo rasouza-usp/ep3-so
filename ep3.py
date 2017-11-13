@@ -45,10 +45,11 @@ def main ():
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     #mem_fisica.dump('/tmp/ep3.mem')
-    ex.simulacao(1,processos)
-    #mem_fisica = open("/tmp/ep3.mem", "wb")
-    #mem_virtual = open("/tmp/ep3.vir", "wb")
-
+    # os elementos da lista tem o formato:
+    # [t0,p, PID] 
+    # [t0,nome,PID]  ou [t,'COMPACTAR', -1]
+    listaExecucao = ex.lista_de_execucao(processos)
+    ex.simula (1,listaExecucao)
 
 # Funções
 def help(): 

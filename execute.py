@@ -1,20 +1,46 @@
 from memory import *
+from operator import itemgetter
 import time
 
-def simula (intervalo,processos):
-	
-    for execucao in processos:
-        if execucao[1] == 'COMPACTAR' and clock == execucao[0]:
-            print execucao
-            compactar()
-                
-        else:
-            executa(execucao)
 
-         
+# itera em uma lista de execucoes; 
+def simula (intervalo,listaExecucao):
+    clock = 0;
+    count = 0
+    execucao = listaExecucao[count]
+    while True:
+        print 'clock: ' + str(clock)
+        if clock == execucao[0]:
+            if isinstance(execucao[1], basestring):
+                if execucao[1] == 'COMPACTAR':
+                    compactar()
+                else:
+                    print 'chegou '+ execucao[1] + ' em t: ' + str(execucao[0])
+            else:
+                executa(execucao)
+            count += 1
+            if count == len(listaExecucao):
+                break
+            execucao = listaExecucao[count]
+        else:
+            clock +=1
+
+# recebe os processos listos de um arquivo trace e 
+# devolve uma lista ordenada por t0 com as execucoes
+# os elementos da lista tem o formato:
+# [t0,p, PID] 
+# [t0,nome,PID]  ou [t,'COMPACTAR', -1]
+def lista_de_execucao(processos):
+    listaExecucao = []
+    for execucao in processos:
+        if execucao[1] == 'COMPACTAR':
+            listaExecucao.append([int(execucao[0]),execucao[1],-1])
+        else:
+            listaExecucao.append([execucao[1].t0,execucao[1].nome,execucao[1].pid])
+            for acesso in execucao[1].acessos:
+                listaExecucao.append([acesso[0],acesso[1], execucao[1].pid])
+    return sorted(listaExecucao,key=itemgetter(0));
 
 def executa (execucao):
-    print 'executando: ' + execucao[1].nome + ' PID: ' + str(execucao[1].pid)
-    print  execucao[1].acessos
-    
-		
+    print  'em t: ' + str(execucao[0]) + ' PID: ' + str(execucao[2]) + ' acessa posicao: ' + str(execucao[1])
+    		
