@@ -67,12 +67,13 @@ class Memory:
             print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(filename,i)))
 
 
-#varre a lista ligada e procura o menor espaco vazio para alocar o processo
+#varre a lista ligada e procura o MENOR espaco vazio para alocar o processo
 def best_fit(memoria,p):
     print 'best fit'
 	
     lista = memoria.get_lista()
-    #->>>Parte 1: encontra um espaco livre na lista ligada para o prcesso que chega  
+    #->>>Parte 1: encontra um espaco livre na lista ligada para o prcesso que chega
+    
     #verfica o espaco ocupado pelo processo
     ocupa = p.get_ocupa()
     
@@ -129,8 +130,69 @@ def best_fit(memoria,p):
     memoria.set_vetor(ini,pid,ocupa)
     memoria.update_file()
 
-def worst_fit():
+
+#varre a lista ligada e procura o MAIOR espaco vazio para alocar o processo
+def worst_fit(memoria,p):
     print 'worst fit'
+	
+    lista = memoria.get_lista()
+    #->>>Parte 1: encontra um espaco livre na lista ligada para o prcesso que chega
+     
+    #verfica o espaco ocupado pelo processo
+    ocupa = p.get_ocupa()
+    
+    #cria os elementos que varrem a lista
+    current = lista.get_head()
+    posicao = None
+
+    #varre a lista e pega a maior posicao de tamanho livre e coloca em 'posicao'
+    while current:
+        if current.get_data() == 'L' and current.get_tamanho() >= ocupa:
+            if posicao == None:
+                posicao = current
+            else:
+                if current.get_tamanho() > posicao.get_tamanho():
+                    posicao = current
+        current = current.get_next()
+     
+    #pega onde a posicao escolhida se inicia e o tamanho
+    ini = posicao.get_inicio()
+    tam = posicao.get_tamanho()
+	
+    #caso a posicao encontrada seja do tamanho exato requerido
+    if (posicao.get_tamanho() == ocupa):
+        posicao.set_data('P')
+        
+    #Caso a posicao encontrada seja maior do que o suficiente
+    else:
+		
+        #aloca um novo node para o processo que chega
+        no = Node('P',ini,ocupa,posicao)
+	
+        #o no alterado tem um novo inicio e um novo tamanho	    
+        posicao.set_inicio(int(ini + ocupa))
+        posicao.set_tamanho(int(tam - ocupa))
+	    
+        #colocar o novo noh no lugar correto
+        #caso o node alterado seja o primeiro da lista ligada
+        if lista.get_head() == posicao:
+            lista.set_head(no)
+            posicao.set_previous(no)
+			
+		#caso seja necessario alterar qualquer outro ponto da lista
+        else:
+            posicao.get_previous().set_next(no)
+            no.set_previous(posicao.get_previous())
+            posicao.set_previous(no)
+			
+    #->>>Parte 2: Define base e limite para o processo alocado
+    p.set_base(ini)
+    p.set_limite(ini+ocupa-1)
+    
+    #->>>Parte 3: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
+    pid = p.get_pid()
+    memoria.set_vetor(ini,pid,ocupa)
+    memoria.update_file()
 
 def quick_fit():
     print 'quick fit'
