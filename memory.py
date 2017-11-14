@@ -120,7 +120,11 @@ def best_fit(memoria,p):
 			no.set_previous(posicao.get_previous())
 			posicao.set_previous(no)
 			
-    #->>>Parte 2: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
+    #->>>Parte 2: Define base e limite para o processo alocado
+    p.set_base(ini)
+    p.set_limite(ini+ocupa-1)
+    
+    #->>>Parte 3: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
     pid = p.get_pid()
     memoria.set_vetor(ini,pid,ocupa)
     memoria.update_file()

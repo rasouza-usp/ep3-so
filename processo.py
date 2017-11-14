@@ -9,6 +9,8 @@ class Processo:
         self.b = int(b)
         self.nome = nome
         self.ocupa = 0
+        self.base = -1
+        self.limite = -1
         self.setpid()
         self.setAcessos(acessos)
 
@@ -21,6 +23,18 @@ class Processo:
         
     def get_ocupa(self):
         return self.ocupa
+        
+    def get_base(self):
+        return self.base
+        
+    def get_limite(self):
+        return self.limite
+        
+    def set_base(self,base):
+        self.base = int(base)
+    
+    def set_limite(self,limite):
+        self.limite = int(limite)
 
     def set_ocupa(self,s):
         b = self.b
