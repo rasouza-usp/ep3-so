@@ -31,13 +31,14 @@ class Node(object):
     def set_tamanho(self, tam):
         self.tamanho = tam
         
+    def set_previous(self, new_previous):
+        self.previous_node = new_previous
+        
     def set_next(self, new_next):
         self.next_node = new_next
         
-    
     def show(self):
         print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho, "\n"
-        self.next_node = new_next
 
 class LinkedList(object):
 	#Inicia uma lista ligada com 1 unico noh do tamanho total disponivel
@@ -50,6 +51,12 @@ class LinkedList(object):
         new_node = Node(data, inicio, tamanho, next_node=None)
         new_node.set_next(self.head)
         self.head = new_node
+        
+    def get_head(self):
+		return self.head
+		
+    def set_head(self, node):
+        self.head = node
     
     def size(self):
         current = self.head
