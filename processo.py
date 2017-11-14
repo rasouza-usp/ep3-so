@@ -23,7 +23,7 @@ class Processo:
         return self.ocupa
 
     def set_ocupa(self,s):
-        b = self.get_b
+        b = self.b
         if(b % s) == 0:
             self.ocupa = b
         else:
