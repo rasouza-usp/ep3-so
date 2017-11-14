@@ -49,14 +49,16 @@ def main ():
     # [t0,nome,PID]  ou [t,'COMPACTAR', -1]
     listaExecucao = ex.lista_de_execucao(processos)
     ex.simula (1,listaExecucao)
+    for i in listaExecucao:
+		print i
     # testes de escria e leitura da memoria
-    mem_fisica.writebin(94,94)
-    mem_fisica.writebin(60,5)
-    mem_fisica.writebin(99,127)
-    print 'Imprime memoria'
-    for i in [0, 1, 60, 94, 99]:
-        x = mem_fisica.readbin('/tmp/ep3.mem',i)
-        print ('Pos '+ str(i) + ': ' +str(x))
+    #mem_fisica.writebin(94,94)
+    #mem_fisica.writebin(60,5)
+    #mem_fisica.writebin(99,127)
+    #print 'Imprime memoria'
+    #for i in [0, 1, 60, 94, 99]:
+    #    x = mem_fisica.readbin('/tmp/ep3.mem',i)
+    #    print ('Pos '+ str(i) + ': ' +str(x))
     #imprime toda a memoria
     #mem_fisica.dump("/tmp/ep3.mem")
 
@@ -104,8 +106,8 @@ def carrega(arquivo):
             p = Processo(line[0], line[1], line[2], line[3], line[4:]) # Cria um processo
             p.set_ocupa(int(memoria["s"]))
             processos.append((line[0],p)) # Coloca na lista de processos
-            mem_virtual.best_fit(p)
-            mem_virtual.get_lista().show()
+            #mem_virtual.worst_fit(p)
+            #mem_virtual.get_lista().show()
         else:
             processos.append((line[0], line[1]))
     f.close()

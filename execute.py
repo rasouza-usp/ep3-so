@@ -36,9 +36,9 @@ def lista_de_execucao(processos):
         if execucao[1] == 'COMPACTAR':
             listaExecucao.append([int(execucao[0]),execucao[1],-1])
         else:
-            listaExecucao.append([execucao[1].t0,execucao[1].nome,execucao[1].pid])
+            listaExecucao.append([execucao[1].t0,execucao[1].nome,execucao[1].ocupa,execucao[1].pid])
             for acesso in execucao[1].acessos:
-                listaExecucao.append([acesso[0],acesso[1], execucao[1].pid])
+                listaExecucao.append([acesso[1],acesso[0], execucao[1].pid])
     return sorted(listaExecucao,key=itemgetter(0));
 
 def executa (execucao):

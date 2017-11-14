@@ -37,17 +37,10 @@ class Memory:
         self.memfile.write(bindata)
         self.memfile.flush()
         
-    def set_vetor(self,inicio,pid,qtde):
-        i = 0
-        while i < int(qtde):
+    def set_update(self,inicio,pid,qtde):
+        for i in range(qtde):
+            self.writebin(inicio + i,pid)
             self.vetor[int(inicio) + i] = int(pid)
-            i = i + 1
-            
-    #atualiza o arquivo de memoria de acordo com o vetor       
-    def update_file(self):
-        self.memfile = open (self.arquivo,'wb')
-        self.memfile.write(pack(str(self.tamanho)+'b',*self.vetor))
-        self.memfile.close()
             
        
     def get_lista(self):
@@ -149,8 +142,7 @@ class Memory:
             
         #->>>Parte 3: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
         pid = p.get_pid()
-        self.set_vetor(ini,pid,ocupa)
-        self.update_file()    
+        self.set_update(ini,pid,ocupa)
 
 def quick_fit():
     print 'quick fit'
