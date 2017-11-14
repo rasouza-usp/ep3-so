@@ -116,9 +116,9 @@ def best_fit(memoria,p):
 			
 		#caso seja necessario alterar qualquer outro ponto da lista
         else:
-			posicao.get_previous().set_next(no)
-			no.set_previous(posicao.get_previous())
-			posicao.set_previous(no)
+            posicao.get_previous().set_next(no)
+            no.set_previous(posicao.get_previous())
+            posicao.set_previous(no)
 			
     #->>>Parte 2: Define base e limite para o processo alocado
     p.set_base(ini)
