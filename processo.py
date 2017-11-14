@@ -27,6 +27,9 @@ class Processo:
     def get_base(self):
         return self.base
         
+    def get_pid(self):
+        return self.pid
+        
     def get_limite(self):
         return self.limite
         
