@@ -44,12 +44,21 @@ def main ():
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
-    #mem_fisica.dump('/tmp/ep3.mem')
     # os elementos da lista tem o formato:
     # [t0,p, PID] 
     # [t0,nome,PID]  ou [t,'COMPACTAR', -1]
     listaExecucao = ex.lista_de_execucao(processos)
     ex.simula (1,listaExecucao)
+    # testes de escria e leitura da memoria
+    mem_fisica.writebin(94,94)
+    mem_fisica.writebin(60,5)
+    mem_fisica.writebin(99,127)
+    print 'Imprime memoria'
+    for i in [0, 1, 60, 94, 99]:
+        x = mem_fisica.readbin('/tmp/ep3.mem',i)
+        print ('Pos '+ str(i) + ': ' +str(x))
+    #imprime toda a memoria
+    #mem_fisica.dump("/tmp/ep3.mem")
 
 # Funções
 def help(): 

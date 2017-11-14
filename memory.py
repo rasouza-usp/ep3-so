@@ -23,16 +23,30 @@ class Memory:
         #define tamanho do arquivo binario em bytes
         # b signed char => 1 byte
         self.memfile.write(pack(str(self.tamanho)+'b',*self.vetor))
-        self.memfile.close()
+        self.memfile.flush()
 		
     def __del__ (self):
         self.memfile.close()
+    
+    # escreve data (inteiro) na posicao position da memoria
+    def writebin (self,position,data):
+        self.memfile.seek(position);
+        bindata = pack('1b',data)
+        self.memfile.write(bindata)
+        self.memfile.flush()
 
+    # le a posicao pos do arquivo de memoria e devolve seu conteudo
+    def readbin (self, filename, pos):
+        fin = open(filename,"rb")
+        fin.seek(pos)
+        x = int(unpack('1b',fin.read(1))[0])
+        fin.close()
+        return x
+    
+    # imprime conteudo de toda a memoria
     def dump (self,filename):
-        print ('Dump do arquivo ' + filename)
-        fin = open(filename,'rb')
         for i in range(self.tamanho):
-            print('Posicao ' + str(i) + ' PID: ' +str(unpack('b',fin.read(1)))) 
+            print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(filename,i)))
 
 #varre a lista liga e procura o menor espaco vazio para alocar o processo
 def best_fit(mem_virtual,p):
