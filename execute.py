@@ -12,7 +12,8 @@ def simula (intervalo,listaExecucao,espaco,substitui):
         if clock == execucao[0]:
             if isinstance(execucao[1], basestring):
                 if execucao[1] == 'COMPACTAR':
-                    compactar()
+                    print 'compactando memoria'
+                    #compactar()
                 elif False:
                     # Aqui vamos tratar o caso de remover um processo
                     remover_processo()

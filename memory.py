@@ -158,8 +158,21 @@ class Memory:
                 posf = posf+requisitados[i]
                 nlistas[i].insert('L',posi,posf)
 
-def compactar():
-    print 'compactando memoria'
+    # compacta a memoria
+    def compactar(self):
+        print 'compactando memoria'
+        mem = self.memfile
+        k = 0;
+        for i in range(self.tamanho):
+            x = readbin(mem,i)
+            if (x != -1):
+                writebin(self.memfile,k,x)
+                k += 1
+        while k < self.tamanho:
+            writebin(self.memfile,k,-1)
+            k += 1
+        self.memfile.flush()
+        mem.close()
 
 def remover_processo():
     print 'remove processo da memoria'
