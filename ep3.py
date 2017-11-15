@@ -27,10 +27,9 @@ paginacao = {1: 'Optimal',
              4: 'Least Recently Used v4'
 }
 
-proc = []
-processos = [] # Lista de processos na forma (t0, Processo)
-espaco = 1 # Algoritmo de gerenciamento espaço livre
-substitui = 1 # Algoritmo de substituição de páginas
+processos = []  # Lista de processos na forma (t0, Processo)
+espaco = 1      # Algoritmo de gerenciamento espaço livre
+substitui = 1   # Algoritmo de substituição de páginas
 
 ### MAIN
 def main ():
@@ -46,28 +45,18 @@ def main ():
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
+    set_espaco(2)
     ex.set_memorias(mem_fisica,mem_virtual)
     
     # os elementos da lista tem o formato:
     # [t0,p, PID] 
     # [t0,nome,ocupa,PID,<processo>]  ou [t,'COMPACTAR', -1]
     listaExecucao = ex.lista_de_execucao(processos)
-    ex.simula (1,listaExecucao)
-    for i in listaExecucao:
-        print i
+    ex.simula (1,listaExecucao,espaco,substitui)
 
-    mem_virtual.get_lista().show()
-    
-    # testes de escria e leitura da memoria
-    #mem_fisica.writebin(94,94)
-    #mem_fisica.writebin(60,5)
-    #mem_fisica.writebin(99,127)
-    #print 'Imprime memoria'
-    #for i in [0, 1, 60, 94, 99]:
-    #    x = mem_fisica.readbin('/tmp/ep3.mem',i)
-    #    print ('Pos '+ str(i) + ': ' +str(x))
     #imprime toda a memoria
-    #mem_fisica.dump("/tmp/ep3.mem")
+    mem_virtual.get_lista().show()
+    #mem_virtual.dump("/tmp/ep3.vir")
 
 # Funções
 def help(): 
@@ -108,13 +97,12 @@ def carrega(arquivo):
     for line in f: 
         line = line.split()
         if line[1] != "COMPACTAR":
-            p = Processo(line[0], line[1], line[2], line[3], line[4:]) # Cria um processo
+            #Processo(t0, tf, b, nome, acessos)
+            p = Processo(int(line[0]), int(line[1]), int(line[2]), line[3], line[4:]) # Cria um processo
             p.set_ocupa(int(memoria["s"]))
-            processos.append((line[0],p)) # Coloca na lista de processos que sera ordenada por ordem de eventos
-            proc.append(p)
-
+            processos.append((int(line[0]),p)) # Coloca na lista de processos que sera ordenada por ordem de eventos
         else:
-            processos.append((line[0], line[1]))
+            processos.append((int(line[0]), line[1]))
     f.close()
     
 
@@ -126,7 +114,9 @@ def terminal():
         if command[0] == "carrega":carrega(command[1])      
         if command[0] == "espaco": set_espaco(command[1])
         if command[0] == "substitui": set_substitui(command[1])
-        if command[0] == "executa": ex.simula(command[1],processos)
+        if command[0] == "executa": 
+            listaExecucao = ex.lista_de_execucao(processos)
+            ex.simula (command[1],listaExecucao,espaco,substitui)
 
 if __name__ == "__main__":
     main()
