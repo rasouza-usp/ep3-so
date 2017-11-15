@@ -42,7 +42,6 @@ class Memory:
             self.writebin(inicio + i,pid)
             self.vetor[int(inicio) + i] = int(pid)
             
-       
     def get_lista(self):
         return self.lista
 
@@ -54,7 +53,7 @@ class Memory:
         fin.close()
         return x
     
-    # imprime conteudo de toda a memoria
+    # imprime o conteudo de todo o arquivo de memoria
     def dump (self,filename):
         for i in range(self.tamanho):
             print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(filename,i)))
@@ -69,7 +68,6 @@ class Memory:
     def worst_fit(self,p):
         return self.search_fit(p,2)
      
-
     def search_fit(self,p,metodo):
 
         if metodo == 1:
@@ -144,8 +142,24 @@ class Memory:
         pid = p.get_pid()
         self.set_update(ini,pid,ocupa)
 
-def quick_fit():
-    print 'quick fit'
+    def quick_fit(self, p):
+        #tamanhos mais requisitados serao multiplos de s
+        print 'quick fit'
+        nlistas = []
+        tam = self.s
+        requisitados = [2*tam, 3*tam, 4*tam]
+        # cria 3 listas com os itervalos mais requisitados
+        for i in range(3):
+            posi = 0
+            posf = requisitados[i]
+            nlistas.append(LinkedList('L',posi,posf,None))
+            while posf < sel.tamanho:
+                posi = posf+1
+                posf = posf+requisitados[i]
+                nlistas[i].insert('L',posi,posf)
 
 def compactar():
     print 'compactando memoria'
+
+def remover_processo():
+    print 'remove processo da memoria'
