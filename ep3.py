@@ -27,6 +27,7 @@ paginacao = {1: 'Optimal',
              4: 'Least Recently Used v4'
 }
 
+proc = []
 processos = [] # Lista de processos na forma (t0, Processo)
 espaco = 1 # Algoritmo de gerenciamento espaço livre
 substitui = 1 # Algoritmo de substituição de páginas
@@ -44,13 +45,19 @@ def main ():
     # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
+    
+    ex.set_memorias(mem_fisica,mem_virtual)
+    
     # os elementos da lista tem o formato:
     # [t0,p, PID] 
-    # [t0,nome,PID]  ou [t,'COMPACTAR', -1]
+    # [t0,nome,ocupa,PID,<processo>]  ou [t,'COMPACTAR', -1]
     listaExecucao = ex.lista_de_execucao(processos)
     ex.simula (1,listaExecucao)
     for i in listaExecucao:
-		print i
+        print i
+
+    mem_virtual.get_lista().show()
+    
     # testes de escria e leitura da memoria
     #mem_fisica.writebin(94,94)
     #mem_fisica.writebin(60,5)
@@ -95,30 +102,28 @@ def carrega(arquivo):
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
-    #mem_fisica.lista.show()
-    #mem_fisica.dump('/tmp/ep3.mem')
-    #mem_virtual.lista.show()
-	
+    ex.set_memorias(mem_fisica,mem_virtual)
+
     # Timeline dos processos na memória
     for line in f: 
         line = line.split()
         if line[1] != "COMPACTAR":
             p = Processo(line[0], line[1], line[2], line[3], line[4:]) # Cria um processo
             p.set_ocupa(int(memoria["s"]))
-            processos.append((line[0],p)) # Coloca na lista de processos
-            #mem_virtual.worst_fit(p)
-            #mem_virtual.get_lista().show()
+            processos.append((line[0],p)) # Coloca na lista de processos que sera ordenada por ordem de eventos
+            proc.append(p)
+
         else:
             processos.append((line[0], line[1]))
     f.close()
-
+    
 
 def terminal():
     while(True):
         command = (raw_input('[ep3]: ')).strip().split()
         print command 
         if command[0] == "sai": sys.exit(0)
-        if command[0] == "carrega":carrega(command[1])        
+        if command[0] == "carrega":carrega(command[1])      
         if command[0] == "espaco": set_espaco(command[1])
         if command[0] == "substitui": set_substitui(command[1])
         if command[0] == "executa": ex.simula(command[1],processos)

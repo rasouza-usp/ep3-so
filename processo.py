@@ -45,7 +45,10 @@ class Processo:
             self.ocupa = b
         else:
             self.ocupa = (b/s + 1) * s
-
+    
+    def show(self):
+        print 'PID: ' + str(self.pid) + ' Nome:' + str(self.nome)
+        
     def setAcessos(self, acessos):
         """ Pega o vetor de acessos a memória e organiza em pares (pn,tn) """
         acessos = map (int,acessos)
