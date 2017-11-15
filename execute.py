@@ -29,7 +29,7 @@ def simula (intervalo,listaExecucao):
 # recebe os processos listos de um arquivo trace e 
 # devolve uma lista ordenada por t0 com as execucoes
 # os elementos da lista tem o formato:
-# [t0,p, PID] 
+# [t0,p, PID, <processo>] 
 # [t0,nome,ocupa,PID,<processo>]  ou [t,'COMPACTAR', -1]
 def lista_de_execucao(processos):
     listaExecucao = []
@@ -39,7 +39,7 @@ def lista_de_execucao(processos):
         else:
             listaExecucao.append([execucao[1].t0,execucao[1].nome,execucao[1].ocupa,execucao[1].pid,execucao[1]])
             for acesso in execucao[1].acessos:
-                listaExecucao.append([acesso[1],acesso[0], execucao[1].pid])
+                listaExecucao.append([acesso[1],acesso[0], execucao[1].pid], execucao[1])
     return sorted(listaExecucao,key=itemgetter(0));
 
 def executa (execucao):
