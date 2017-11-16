@@ -37,10 +37,14 @@ class Memory:
         self.memfile.write(bindata)
         self.memfile.flush()
         
-    def set_update(self,inicio,pid,qtde):
+    def set_update(self,inicio,pid,qtde,reservado):
         for i in range(qtde):
             self.writebin(inicio + i,pid)
             self.vetor[int(inicio) + i] = int(pid)
+        while i < reservado:
+            self.writebin(inicio + i,-1)
+            self.vetor[int(inicio) + i] = -1
+            i +=1
             
     def get_lista(self):
         return self.lista
@@ -89,6 +93,7 @@ class Memory:
          
         #verfica o espaco ocupado pelo processo p
         ocupa = p.get_ocupa()
+        reserva = p.get_reserva()
         
         #cria os elementos que varrem a lista
         current = lista.get_head()
@@ -96,7 +101,7 @@ class Memory:
 
         #varre a lista e pega a maior ou menor posicao de tamanho livre que caiba o processo e coloca em 'posicao'
         while current:
-            if current.get_data() == 'L' and current.get_tamanho() >= ocupa:
+            if current.get_data() == 'L' and current.get_tamanho() >= reserva:
                 if posicao == None:
                     posicao = current
                 else:
@@ -116,18 +121,18 @@ class Memory:
         tam = posicao.get_tamanho()
         
         #caso a posicao encontrada seja do tamanho exato requerido
-        if (tam == ocupa):
+        if (tam == reserva):
             posicao.set_data('P')
             
         #Caso a posicao encontrada seja maior do que o suficiente
         else:
 
             #aloca um novo node para o processo que chega
-            no = Node('P',ini,ocupa,posicao)
+            no = Node('P',ini,reserva,posicao)
 
             #o no alterado tem um novo inicio e um novo tamanho	    
-            posicao.set_inicio(int(ini + ocupa))
-            posicao.set_tamanho(int(tam - ocupa))
+            posicao.set_inicio(int(ini + reserva))
+            posicao.set_tamanho(int(tam - reserva))
             
             #colocar o novo noh no lugar correto
             #caso o node alterado seja o primeiro da lista ligada
@@ -143,11 +148,11 @@ class Memory:
 
         #->>>Parte 2: Define base e limite para o processo alocado
         p.set_base(ini)
-        p.set_limite(ini+ocupa-1)
+        p.set_limite(ini+reserva-1)
             
         #->>>Parte 3: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
         pid = p.get_pid()
-        self.set_update(ini,pid,ocupa)
+        self.set_update(ini,pid,ocupa,reserva)
 
     def quick_fit(self, p):
         #tamanhos mais requisitados serao multiplos de s

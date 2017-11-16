@@ -57,7 +57,7 @@ def main ():
     #imprime toda a memoria
     mem_virtual.get_lista().show()
     #mem_virtual.removebin(2)
-    #mem_virtual.dump()
+    mem_virtual.dump()
 
 # Funções
 def help(): 
@@ -100,7 +100,9 @@ def carrega(arquivo):
         if line[1] != "COMPACTAR":
             #Processo(t0, tf, b, nome, acessos)
             p = Processo(int(line[0]), int(line[1]), int(line[2]), line[3], line[4:]) # Cria um processo
+            # define os tamanhos de que serao reservados para o processo 
             p.set_ocupa(int(memoria["s"]))
+            p.set_reserva(int(memoria["p"]))
             processos.append((int(line[0]),p)) # Coloca na lista de processos que sera ordenada por ordem de eventos
         else:
             processos.append((int(line[0]), line[1]))

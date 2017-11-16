@@ -4,15 +4,16 @@ class Processo:
     current_pid = 0
 
     def __init__(self, t0, tf, b, nome, acessos):
-        self.t0 = int(t0)
-        self.tf = int(tf)
-        self.b = int(b)
-        self.nome = nome
-        self.ocupa = 0
-        self.base = -1
-        self.limite = -1
-        self.setpid()
-        self.setAcessos(acessos)
+        self.t0 = int(t0)         # tempo de chegada do processo
+        self.tf = int(tf)         # tempo de termino do processo
+        self.b = int(b)           # tamanho de memoria requisitado pelo processo
+        self.nome = nome          # string com nome do processo
+        self.ocupa = 0            # tamanho ocupado pelo processo devido a uniadade de alocacao (tamanho marcado com seu pid)
+        self.reserva = 0          # tamanho reservado pelo processo devida ao tamanho da pagina  
+        self.base = -1            # endereco base do processo
+        self.limite = -1          # endereco limite do processo  
+        self.setpid()             # define pid do processo
+        self.setAcessos(acessos)  # pares de acesso a memoria (pn,tn)
 
     def setpid(self):
         self.pid = Processo.current_pid
@@ -23,6 +24,9 @@ class Processo:
         
     def get_ocupa(self):
         return self.ocupa
+    
+    def get_reserva(self):
+        return self.reserva
         
     def get_base(self):
         return self.base
@@ -45,6 +49,13 @@ class Processo:
             self.ocupa = b
         else:
             self.ocupa = (b/s + 1) * s
+    
+    def set_reserva(self,p):
+        b = self.ocupa
+        if (b % p) == 0:
+            self.reserva = b
+        else:
+            self.reserva = (b/p + 1) * p
     
     def show(self):
         print 'PID: ' + str(self.pid) + ' Nome:' + str(self.nome)
