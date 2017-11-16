@@ -68,8 +68,10 @@ class Memory:
     
     # imprime o conteudo de todo o arquivo de memoria
     def dump (self):
+        print "[Posicao| PID]"
         for i in range(self.tamanho):
-            print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(i)))
+            #print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(i)))
+            print('[' + str(i) + ' | ' +str(self.readbin(i))+']'), 
 
     #BEST FIT
     #varre a lista ligada e procura o MENOR espaco vazio para alocar o processo
@@ -154,9 +156,6 @@ class Memory:
             
         #->>>Parte 3: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
         pid = p.get_pid()
-        print pid 
-        print ocupa
-        print reserva
         self.set_update(ini,pid,ocupa,reserva)
 
     def quick_fit(self, p):
