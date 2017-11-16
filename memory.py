@@ -36,11 +36,13 @@ class Memory:
         bindata = pack('1b',data)
         self.memfile.write(bindata)
         self.memfile.flush()
-        
+    
+    # atualiza memoria escrevendo pid nos espacos ocupados e -1 nos livres
     def set_update(self,inicio,pid,qtde,reservado):
         for i in range(qtde):
             self.writebin(inicio + i,pid)
             self.vetor[int(inicio) + i] = int(pid)
+        i += 1
         while i < reservado:
             self.writebin(inicio + i,-1)
             self.vetor[int(inicio) + i] = -1
@@ -152,6 +154,9 @@ class Memory:
             
         #->>>Parte 3: Altera o vetor da memoria de acordo com o espaco destinado ao novo processo
         pid = p.get_pid()
+        print pid 
+        print ocupa
+        print reserva
         self.set_update(ini,pid,ocupa,reserva)
 
     def quick_fit(self, p):
