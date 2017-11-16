@@ -56,7 +56,8 @@ def main ():
 
     #imprime toda a memoria
     mem_virtual.get_lista().show()
-    #mem_virtual.dump("/tmp/ep3.vir")
+    #mem_virtual.removebin(2)
+    #mem_virtual.dump()
 
 # Funções
 def help(): 

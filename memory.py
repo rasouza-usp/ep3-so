@@ -46,17 +46,24 @@ class Memory:
         return self.lista
 
     # le a posicao pos do arquivo de memoria e devolve seu conteudo
-    def readbin (self, filename, pos):
-        fin = open(filename,"rb")
+    def readbin (self, pos):
+        fin = open(self.arquivo,"rb")
         fin.seek(pos)
         x = int(unpack('1b',fin.read(1))[0])
         fin.close()
         return x
     
-    # imprime o conteudo de todo o arquivo de memoria
-    def dump (self,filename):
+    # remove pid da memoria e coloca -1
+    def removebin(self, data):
         for i in range(self.tamanho):
-            print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(filename,i)))
+            x = self.readbin(i)
+            if data == x:
+                self.writebin (i,-1)
+    
+    # imprime o conteudo de todo o arquivo de memoria
+    def dump (self):
+        for i in range(self.tamanho):
+            print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(i)))
 
     #BEST FIT
     #varre a lista ligada e procura o MENOR espaco vazio para alocar o processo
