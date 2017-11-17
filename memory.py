@@ -57,6 +57,14 @@ class Memory:
     def get_lista(self):
         return self.lista
         
+    #retorna o tamanho de pagina    
+    def get_p(self):
+        return self.p
+        
+    #retorna o tamanho da memoria    
+    def get_p(self):
+        return self.tamanho
+        
     #monta a tabela de paginas da memoria
     def set_tabela(self):
         npag = int(self.tamanho/self.p)

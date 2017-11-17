@@ -2,10 +2,13 @@ from memory import *
 from operator import itemgetter
 import time
 
+
 # itera em uma lista de execucoes; 
 def simula (intervalo,listaExecucao,espaco,substitui):
     clock = 0;
     count = 0
+    global pagefault 
+    pagefault = 0
     execucao = listaExecucao[count]
     while True:
         print 'clock: ' + str(clock)
@@ -60,8 +63,31 @@ def lista_de_execucao(processos):
                 listaExecucao.append([acesso[1],acesso[0], execucao[1].pid, execucao[1]])
     return sorted(listaExecucao,key=itemgetter(0));
 
+# estrutura: [t0,p, PID, <processo>] 
 def executa (execucao):
     print  'em t: ' + str(execucao[0]) + ' PID: ' + str(execucao[2]) + ' acessa posicao: ' + str(execucao[1])
+    
+    # encontra a posicao acessada = base + p
+    pos = execucao[3].get_base()+execucao[1]
+    
+    # pega a qual pagina aquela posicao pertence
+    tamPagina = mem_virtual.get_p()
+    pagina = pos/tamPagina
+    
+    # verifica se a pagina se encontra na memoria fisica
+    #caso nao esteja:
+    if mem_virtual.tabela[pagina].get_presente == 0:
+        pagefault +=1
+        #verifica se existe espaco livre na mem fisica pra mapear a pag
+        numPag = int(mem_fisica.get_tamanho()/tamPagina)
+  
+        #---->>>> PAREI AQUI!!!!
+        for i in range(numPag):
+            if mem_fisica.lista
+        
+        #caso nao exista mapeamos usando algoritmos de paginacao
+    
+    
    
 def set_memorias(fisica,virtual):
     global mem_fisica

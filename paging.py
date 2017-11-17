@@ -13,6 +13,10 @@ class Page:
         self.m = 0
         self.r = 0
         
+    #retorna o valor do bit presente/ausente    
+    def get_presente(self):
+        return self.presente
+        
 def optimal():
     print 'optimal'
 
