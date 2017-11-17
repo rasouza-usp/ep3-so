@@ -19,6 +19,7 @@ class Memory:
         #lista ligada para controle do espaco livre da memoria
         self.lista = LinkedList('L',0,self.tamanho,None)
         
+        
         #Abre o arquivo para a memoria
         self.memfile = open (filename,'wb')
         
@@ -50,6 +51,7 @@ class Memory:
             
     def get_lista(self):
         return self.lista
+        
 
     # le a posicao pos do arquivo de memoria e devolve seu conteudo
     def readbin (self, pos):
@@ -105,6 +107,7 @@ class Memory:
 
         #varre a lista e pega a maior ou menor posicao de tamanho livre que caiba o processo e coloca em 'posicao'
         while current:
+			# se tem espaco livre e cabe o processo (usando tamanho da pagina)
             if current.get_data() == 'L' and current.get_tamanho() >= reserva:
                 if posicao == None:
                     posicao = current
@@ -124,7 +127,7 @@ class Memory:
         ini = posicao.get_inicio()
         tam = posicao.get_tamanho()
         
-        #caso a posicao encontrada seja do tamanho exato requerido
+        #caso a posicao encontrada seja do tamanho exato requerido (levando em consideracao o tam da pagina)
         if (tam == reserva):
             posicao.set_data('P')
             
@@ -158,9 +161,32 @@ class Memory:
         pid = p.get_pid()
         self.set_update(ini,pid,ocupa,reserva)
 
+    #Recebe uma lista com os tamanhos dos processos e prepara o quick fit
+    def prepare_quick_fit(self, tamanhos):
+        requisitados = []
+        
+        #Pega quantas vezes cada elemento ocorre
+        for i in len(tamanhos):
+            x = tamanhos[i]
+            #monta uma lista de duplas ('num de ocorrencias de X','X')
+            requisitados.append(tamanhos.count(x),x)
+            
+        #Ordena essa lista de (num ocorrencias X, X)
+        selecionados = sorted(requisitados,key=itemgetter(0));
+        
+        #remover os repetidos
+        
+        
+        #pegar as 3 maiores reccorencias e montar as listas ligadas
+        
+        #unir as listas em uma outra lista
+        
+        
     def quick_fit(self, p):
         #tamanhos mais requisitados serao multiplos de s
         print 'quick fit'
+        
+        requisitados =[] 
         nlistas = []
         tam = self.s
         requisitados = [2*tam, 3*tam, 4*tam]

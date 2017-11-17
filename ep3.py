@@ -84,6 +84,9 @@ def carrega(arquivo):
         
     global mem_fisica
     global mem_virtual
+    global tamanhos
+    
+    tamanhos = []
 
     # Define parametros da memória
     memoria["total"], memoria["virtual"], memoria["s"], memoria["p"] = f.readline().split()
@@ -103,7 +106,10 @@ def carrega(arquivo):
             # define os tamanhos de que serao reservados para o processo 
             p.set_ocupa(int(memoria["s"]))
             p.set_reserva(int(memoria["p"]))
-            processos.append((int(line[0]),p)) # Coloca na lista de processos que sera ordenada por ordem de eventos
+            # Coloca na lista de processos que sera ordenada por ordem de eventos
+            processos.append((int(line[0]),p)) 
+            #guarda os tamanhos para ser usado no quick fit
+            tamanhos.append(p.get_reserva())
         else:
             processos.append((int(line[0]), line[1]))
     f.close()

@@ -37,6 +37,9 @@ class Processo:
     def get_limite(self):
         return self.limite
         
+    def get_reserva(self):
+        return self.reserva
+        
     def set_base(self,base):
         self.base = int(base)
     
