@@ -1,11 +1,11 @@
 class Node(object):
 
     def __init__(self, data, inicio, tamanho, next_node):
-        self.data = data           # L se eh um noh livre e P se tem processo
+        self.data = data                # L se eh um noh livre e P se tem processo
         self.inicio = int(inicio)       # Em que posicao comeca
         self.tamanho = int(tamanho)     # Tamanho ocupado
-        self.next_node = next_node # Proximo noh
-        self.previous_node = None #No anterior
+        self.next_node = next_node      # Proximo noh
+        self.previous_node = None       #No anterior
 
     def get_data(self):
         return self.data
@@ -46,12 +46,21 @@ class LinkedList(object):
         new_node = Node(data, inicio, tamanho, next_node=None)
         self.head = new_node
 
-	#insere um elemento na lista : Parece errado!!!
-    def insert(self, data, inicio, tamanho, next_node=None):
+	#insere um elemento no INICIO da lista
+    def insert_head(self, data, inicio, tamanho, next_node=None):
         new_node = Node(data, inicio, tamanho, next_node=None)
         new_node.set_next(self.head)
         self.head = new_node
-        
+
+    #insere um elemento no FINAL da lista
+    def insert_tail(self,data,inicio,tamanho,next_node=None):
+        new_node = Node(data, inicio, tamanho, next_node=None)
+        current = self.head
+        while current:
+            previous = current
+            current = current.get_next()
+        previous.set_next(new_node)
+
     def get_head(self):
         return self.head
 
@@ -86,7 +95,6 @@ class LinkedList(object):
             raise ValueError("Data not in list")
         return current
         
-    #atualizar os tamanho no caso de dois espacos livres seguidos
     def delete(self, data):
         current = self.head
         previous = None
@@ -103,3 +111,17 @@ class LinkedList(object):
             self.head = current.get_next()
         else:
             previous.set_next(current.get_next())
+
+    # atualiza os tamanho no caso de dois espacos livres seguidos
+    def delete_update(self, data):
+        current = self.head
+        previous = None
+        while current:
+            if current.get_data() == data:
+                nextfree = current.get_next()
+                while nextfree and nextfree.get_data() == data:
+                    current.set_tamanho(current.get_tamanho() + nextfree.get_tamanho())
+                    nextfree = nextfree.get_next()
+                current.set_next(nextfree)
+            previous = current
+            current = current.get_next()
