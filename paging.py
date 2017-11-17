@@ -9,9 +9,10 @@ class Page:
         self.presente = 0                #presente = 1 se a pagina esta mapeada na memoria fisica e 0 caso contrario
         self.link = -1                   #link recebe o indice da pagina que esta linkada na memoria fisica
         self.procId = -1                 #O id do processo dono desta pagina
+        self.tAcesso = -1
+        self.m = 0
+        self.r = 0
         
-
-
 def optimal():
     print 'optimal'
 

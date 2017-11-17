@@ -85,7 +85,8 @@ class LinkedList(object):
         if current is None:
             raise ValueError("Data not in list")
         return current
-
+        
+    #atualizar os tamanho no caso de dois espacos livres seguidos
     def delete(self, data):
         current = self.head
         previous = None

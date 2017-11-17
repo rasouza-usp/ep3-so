@@ -26,6 +26,12 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                         mem_virtual.worst_fit(execucao[4])
                     elif espaco == 3:
                         mem_virtual.quick_fit(execucao[4])
+                        
+                    mem_virtual.get_pagina(execucao[4])
+                    print 'olha as tabelas: '
+                    #na hora do acesso varre a mem fisica e proc espaco se nao
+                    #mem_virtual.lista.show()
+                    #mem_virtual.show_tabela()
             else:
                 # acesso a memoria
                 executa(execucao)

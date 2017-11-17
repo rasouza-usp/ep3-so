@@ -71,8 +71,23 @@ class Memory:
     def show_tabela(self):
         j = 0
         for pag in self.tabela:
-            print 'pagina num: ' + str(j) +' com o processo de id:' + str(pag.procId) + ' mapeado em: ' + str(pag.link)
+            print 'pagina num: ' + str(j) +' com o processo de id:' + str(pag.procId) + ' presente/ausente: ' + str(pag.presente)
             j+=1
+    
+    # ->>>>> APENAS PARA A MEMORIA VIRTUAL        
+    #quando um processo chega ele eh carregado na tabela de paginas da mem virtual
+    def get_pagina(self,proc):
+        #pega o num de paginas que o processo vai utilizar
+        numPag = int(proc.get_reserva()/self.p)
+        base = proc.get_base()
+        pid = proc.get_pid()
+        
+        #k determina a primeira pagina a ser marcada
+        k = base/self.p
+        for i in range(numPag):
+            self.tabela[k+i].procId = pid
+            
+        
 
     # le a posicao pos do arquivo de memoria e devolve seu conteudo
     def readbin (self, pos):
