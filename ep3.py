@@ -95,6 +95,9 @@ def carrega(arquivo):
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
+    print 'como ficou a tabela de paginas:'
+    mem_virtual.show_tabela()
+    
     ex.set_memorias(mem_fisica,mem_virtual)
 
     # Timeline dos processos na memória

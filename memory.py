@@ -4,6 +4,7 @@
 # Nao vai dar pra usar o bitmap
 from struct import pack,unpack
 from linkedlist import *
+from paging import *
 
 
 class Memory:
@@ -12,6 +13,10 @@ class Memory:
         self.s = s
         self.p = p
         self.arquivo = filename
+        self.tabela = []
+        
+        #monta a tabela de paginas para esta memoria
+        self.set_tabela()
         
         #lista que vai espelhar a situacao da memoria. Vamos escrever essa lista no arquivo
         self.vetor = [-1] * self.tamanho 
@@ -52,6 +57,22 @@ class Memory:
     def get_lista(self):
         return self.lista
         
+    #monta a tabela de paginas da memoria
+    def set_tabela(self):
+        npag = int(self.tamanho/self.p)
+        j = 0
+        p = int(self.p)
+        for i in range(npag):
+            pagina = Page(j,p)
+            self.tabela.append(pagina)
+            j += p
+            
+    #mostra a tabela de paginas da memoria     
+    def show_tabela(self):
+        j = 0
+        for pag in self.tabela:
+            print 'pagina num: ' + str(j) +' com o processo de id:' + str(pag.procId) + ' mapeado em: ' + str(pag.link)
+            j+=1
 
     # le a posicao pos do arquivo de memoria e devolve seu conteudo
     def readbin (self, pos):
