@@ -95,8 +95,6 @@ class Memory:
         for i in range(numPag):
             self.tabela[k+i].procId = pid
             
-        
-
     # le a posicao pos do arquivo de memoria e devolve seu conteudo
     def readbin (self, pos):
         fin = open(self.arquivo,"rb")
@@ -114,7 +112,7 @@ class Memory:
     
     # imprime o conteudo de todo o arquivo de memoria
     def dump (self):
-        print "[Posicao| PID]"
+        print "Status da memoria: [Posicao| PID]"
         for i in range(self.tamanho):
             #print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(i)))
             print('[' + str(i) + ' | ' +str(self.readbin(i))+']'), 
@@ -131,10 +129,10 @@ class Memory:
      
     def search_fit(self,p,metodo):
 
-        if metodo == 1:
-            print 'Best Fit'
-        else:
-            print 'Worst Fit'
+        #if metodo == 1:
+        #    print 'Best Fit'
+        #else:
+        #    print 'Worst Fit'
         
         #obtem a lista ligada da memoria
         lista = self.lista
@@ -260,5 +258,5 @@ class Memory:
         self.memfile.flush()
         mem.close()
 
-def remover_processo():
-    print 'remove processo da memoria'
+def remover_processo(processo):
+    print "t: " + str(processo.tf) + ' REMOVER ' + processo.nome

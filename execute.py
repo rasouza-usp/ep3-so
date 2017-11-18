@@ -15,72 +15,73 @@ def simula (intervalo,listaExecucao,espaco,substitui):
     execucao = listaExecucao[count]
     
     while True:
-        print 'clock: ' + str(clock)
+        #print 'clock: ' + str(clock)
         if clock == execucao[0]:
             if isinstance(execucao[1], basestring):
+                #print execucao
                 if execucao[1] == 'COMPACTAR':
-                    print 'compactando memoria'
+                    print 't: ' + str(execucao[0]) + ' COMPACTAR'
                     #compactar()
-                elif False:
+                elif execucao[1] == 'REMOVER':
                     # Aqui vamos tratar o caso de remover um processo
-                    remover_processo()
-                else:
+                    remover_processo(execucao[3])
+                elif execucao[1] == 'ALOCAR':
                     # Chegou um novo processo: manda pra memoria virtual
-                    print 'chegou '+ execucao[1] + ' em t: ' + str(execucao[0])
+                    print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome 
                     if espaco == 1:
-                        mem_virtual.best_fit(execucao[4])
+                        mem_virtual.best_fit(execucao[3])
                     elif espaco == 2:
-                        mem_virtual.worst_fit(execucao[4])
+                        mem_virtual.worst_fit(execucao[3])
                     elif espaco == 3:
-                        mem_virtual.quick_fit(execucao[4])
+                        mem_virtual.quick_fit(execucao[3])
                         
-                    mem_virtual.get_pagina(execucao[4])
-                    print 'olha as tabelas: '
+                    mem_virtual.get_pagina(execucao[3])
+                    #print 'olha as tabelas: '
                     #na hora do acesso varre a mem fisica e proc espaco se nao
                     #mem_virtual.lista.show()
                     #mem_virtual.show_tabela()
-            else:
-                # acesso a memoria
-                executa(execucao)
-            count += 1
-            if count == len(listaExecucao):
-                break
-            execucao = listaExecucao[count]
+                elif execucao[1] == 'ACESSO':
+                    # acesso a memoria
+                    executa(execucao,substitui)
+                count += 1
+                if count == len(listaExecucao):
+                    break
+                execucao = listaExecucao[count]
         else:
             clock +=1
         
-        print 'MEMORIA VIRTUAL'    
-        mem_virtual.show_tabela()
-        print 'MEMORIA FISICA'    
-        mem_fisica.show_tabela()
+        #print 'MEMORIA VIRTUAL'    
+        #mem_virtual.show_tabela()
+        #print 'MEMORIA FISICA'    
+        #mem_fisica.show_tabela()
         
 
 # recebe os processos lidos de um arquivo trace e 
-# devolve uma lista ordenada por t0 com todos os acessos a memoria
-# os elementos da lista tem o formato:
-# [t0,p, PID, <processo>] 
-# [t0,nome,ocupa,PID,<processo>]  ou [t,'COMPACTAR', -1] ! podemos tirar esse -1 do 'COMPACTAR'
+# devolve uma lista ordenada por t com todas ACOES de manipualacao da memoria
+# os elementos da lista tem o seguinte formato:
+# [ t, ACAO, tam/pos memoria, <processo>]
 def lista_de_execucao(processos):
     listaExecucao = []
     for execucao in processos:
         if execucao[1] == 'COMPACTAR':
             listaExecucao.append([execucao[0],execucao[1],-1])
         else:
-            listaExecucao.append([execucao[1].t0,execucao[1].nome,execucao[1].ocupa,execucao[1].pid,execucao[1]])
-            # adicionar tf para remover o processo
-            #listaExecucao.append([execucao[1].tf,'REMOVER',execucao[1]])
+            listaExecucao.append([execucao[1].t0,"ALOCAR",execucao[1].ocupa,execucao[1]])
             for acesso in execucao[1].acessos:
-                listaExecucao.append([acesso[1],acesso[0], execucao[1].pid, execucao[1]])
+                listaExecucao.append([acesso[1],'ACESSO',acesso[0],execucao[1]])
+            # adicionar tf para remover o processo
+            listaExecucao.append([execucao[1].tf,'REMOVER',-1,execucao[1]])
     return sorted(listaExecucao,key=itemgetter(0));
 
 # estrutura: [t0,p, PID, <processo>] 
-def executa (execucao):
-    print  'em t: ' + str(execucao[0]) + ' PID: ' + str(execucao[2]) + ' acessa posicao: ' + str(execucao[1])
+def executa (execucao,substitui):
+    #print  'em t: ' + str(execucao[0]) + ' PID: ' + str(execucao[3].nome) + ' acessa posicao: ' + str(execucao[2])
+    print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome + ' em: ' + str(execucao[2])
     
     global pagefault
     
     # encontra a posicao acessada = base + p
-    pos = execucao[3].get_base()+execucao[1]
+    pos = execucao[3].get_base()+execucao[2]
     pid = execucao[3].get_pid()
     
     # pega a qual pagina aquela posicao pertence
