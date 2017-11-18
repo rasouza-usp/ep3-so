@@ -104,10 +104,8 @@ def executa (execucao,substitui):
         
         # pega o numero de paginas na memoria fisica
         numPags = int(mem_fisica.get_tamanho()/tamPagina)
-        
-        i = 0
-        
-        while i < numPags:
+        # busca uma pagina vazia na memoria
+        for i in range(numPags):
             #se existe uma pagina disponivel:
             if mem_fisica.tabela[i].get_procId() == -1:
 
@@ -132,9 +130,9 @@ def executa (execucao,substitui):
                 unidades_ocupadas = posicao_inicial + tamPagina
                 #mem_fisica.set_update(posicao_inicial,pid,unidades_ocupadas,tamPagina)
                 
+                # alocou a pagina; pode sair do loop
                 alocou = 1
-                i = numPags
-            i +=1
+                break
     
         # se nao consegui alocar a pagina, then ...
         # Usando algoritmos de paginacao
