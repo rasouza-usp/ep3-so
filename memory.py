@@ -62,7 +62,7 @@ class Memory:
         return self.p
         
     #retorna o tamanho da memoria    
-    def get_p(self):
+    def get_tamanho(self):
         return self.tamanho
         
     #monta a tabela de paginas da memoria
@@ -79,7 +79,7 @@ class Memory:
     def show_tabela(self):
         j = 0
         for pag in self.tabela:
-            print 'pagina num: ' + str(j) +' com o processo de id:' + str(pag.procId) + ' presente/ausente: ' + str(pag.presente)
+            print 'pagina num: ' + str(j) +' com o processo de id:' + str(pag.procId) + ' presente/ausente: ' + str(pag.presente) + ' mapeada: ' + str(pag.mapeada) + ' tAcesso: ' + str(pag.tAcesso)
             j+=1
     
     # ->>>>> APENAS PARA A MEMORIA VIRTUAL        

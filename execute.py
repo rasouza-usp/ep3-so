@@ -1,15 +1,18 @@
 from memory import *
 from operator import itemgetter
 import time
-
-
+    
+    
 # itera em uma lista de execucoes; 
 def simula (intervalo,listaExecucao,espaco,substitui):
-    clock = 0;
-    count = 0
-    global pagefault 
+    global clock
+    global pagefault
+    
+    clock = 0
+    count = 0 
     pagefault = 0
     execucao = listaExecucao[count]
+    
     while True:
         print 'clock: ' + str(clock)
         if clock == execucao[0]:
@@ -44,6 +47,12 @@ def simula (intervalo,listaExecucao,espaco,substitui):
             execucao = listaExecucao[count]
         else:
             clock +=1
+        
+        print 'MEMORIA VIRTUAL'    
+        mem_virtual.show_tabela()
+        print 'MEMORIA FISICA'    
+        mem_fisica.show_tabela()
+        
 
 # recebe os processos lidos de um arquivo trace e 
 # devolve uma lista ordenada por t0 com todos os acessos a memoria
@@ -67,30 +76,64 @@ def lista_de_execucao(processos):
 def executa (execucao):
     print  'em t: ' + str(execucao[0]) + ' PID: ' + str(execucao[2]) + ' acessa posicao: ' + str(execucao[1])
     
+    global pagefault
+    
     # encontra a posicao acessada = base + p
     pos = execucao[3].get_base()+execucao[1]
+    pid = execucao[3].get_pid()
     
     # pega a qual pagina aquela posicao pertence
     tamPagina = mem_virtual.get_p()
     pagina = pos/tamPagina
     
     # verifica se a pagina se encontra na memoria fisica
+    
     #caso nao esteja:
-    if mem_virtual.tabela[pagina].get_presente == 0:
+    if mem_virtual.tabela[pagina].get_presente() == 0:
+
+       #pagefault
         pagefault +=1
-        #verifica se existe espaco livre na mem fisica pra mapear a pag
-        numPag = int(mem_fisica.get_tamanho()/tamPagina)
-  
-        #---->>>> PAREI AQUI!!!!
-        for i in range(numPag):
-            if mem_fisica.lista
+        alocou = 0
         
-        #caso nao exista mapeamos usando algoritmos de paginacao
+        # passo 1: verifica se existe espaco livre na mem fisica pra mapear a pag
+        
+        # pega o numero de paginas na memoria fisica
+        numPags = int(mem_fisica.get_tamanho()/tamPagina)
+        
+        i = 0
+        
+        while i < numPags:
+
+            #se existe uma pagina disponivel:
+            if mem_fisica.tabela[i].get_procId() == -1:
+
+                #altera os dados da pagina na mem fisica:
+                mem_fisica.tabela[i].set_procId(pid)
+                mem_fisica.tabela[i].set_r(1)
+                mem_fisica.tabela[i].set_tAcesso(clock)
+                mem_fisica.tabela[i].set_mapeada(pagina)
+                
+                #altera o bit presente/ausente
+                mem_virtual.tabela[pagina].set_presente(1)
+                
+                #grava o mapeamento a memoria virtual na fisica
+                mem_virtual.tabela[pagina].set_mapeada(i)
+                
+                alocou = 1
+                i = numPags
+            i +=1
+    
+    # se verificamos que toda a memoria fisica e nao encontrou espaco
+    #if alocou == 0:
+                
+    #Usando algoritmos de paginacao
     
     
    
 def set_memorias(fisica,virtual):
     global mem_fisica
     global mem_virtual
+
     mem_fisica = fisica
     mem_virtual = virtual
+    
