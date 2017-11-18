@@ -40,22 +40,22 @@ def main ():
 
     # DEBUG ---
     carrega(sys.argv[1])
-    #print vars(processos[0][1])
-    # END DEBUG ---
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
     set_espaco(1)
+    set_substitui(2)
     ex.set_memorias(mem_fisica,mem_virtual)
     
     # os elementos da lista tem o formato:
-    # [t0,p, PID] 
-    # [t0,nome,ocupa,PID,<processo>]  ou [t,'COMPACTAR', -1]
+    # [ t, ACAO, tam/pos memoria, <processo>]
     listaExecucao = ex.lista_de_execucao(processos)
     ex.simula (1,listaExecucao,espaco,substitui)
 
     #imprime toda a memoria
-    mem_virtual.dump()
+    mem_virtual.dump2()
+    
+    # END DEBUG ---
 
 # Funções
 def help(): 
@@ -93,8 +93,8 @@ def carrega(arquivo):
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
-    print 'como ficou a tabela de paginas:'
-    mem_virtual.show_tabela()
+    #print 'como ficou a tabela de paginas:'
+    #mem_virtual.show_tabela()
     
     ex.set_memorias(mem_fisica,mem_virtual)
 

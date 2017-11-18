@@ -38,7 +38,7 @@ class Node(object):
         self.next_node = new_next
         
     def show(self):
-        print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho, "\n"
+        print "Data: =", self.data, "| Inicio =", self.inicio, "| Tamanho =", self.tamanho
 
 class LinkedList(object):
     #Inicia uma lista ligada com 1 unico noh do tamanho total disponivel
@@ -79,8 +79,9 @@ class LinkedList(object):
     #mostra a lista ligada inteira 
     def show(self):
         current = self.head
+        print 'Status da lista:'
         while current:
-            print "Data: =", current.data, "| Inicio =", current.inicio, "| Tamanho =", current.tamanho, "\n"
+            print "Data: =", current.data, "| Inicio =", current.inicio, "| Tamanho =", current.tamanho
             current = current.get_next()
 
     def search(self, data):

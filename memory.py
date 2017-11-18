@@ -24,7 +24,6 @@ class Memory:
         #lista ligada para controle do espaco livre da memoria
         self.lista = LinkedList('L',0,self.tamanho,None)
         
-        
         #Abre o arquivo para a memoria
         self.memfile = open (filename,'wb')
         
@@ -67,10 +66,11 @@ class Memory:
         
     #monta a tabela de paginas da memoria
     def set_tabela(self):
-        npag = int(self.tamanho/self.p)
-        j = 0
         p = int(self.p)
+        npag = int(self.tamanho/p)
+        j = 0
         for i in range(npag):
+            # Page(inicio,tamanho)
             pagina = Page(j,p)
             self.tabela.append(pagina)
             j += p
@@ -78,6 +78,7 @@ class Memory:
     #mostra a tabela de paginas da memoria     
     def show_tabela(self):
         j = 0
+        print 'Status da tabela de paginas:'
         for pag in self.tabela:
             print 'pagina num: ' + str(j) +' com o processo de id:' + str(pag.procId) + ' presente/ausente: ' + str(pag.presente) + ' mapeada: ' + str(pag.mapeada) + ' tAcesso: ' + str(pag.tAcesso)
             j+=1
@@ -111,11 +112,20 @@ class Memory:
                 self.writebin (i,-1)
     
     # imprime o conteudo de todo o arquivo de memoria
-    def dump (self):
+    def dump2 (self):
         print "Status da memoria: [Posicao| PID]"
         for i in range(self.tamanho):
             #print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(i)))
             print('[' + str(i) + ' | ' +str(self.readbin(i))+']'), 
+    
+    def dump (self):
+        print "Status da memoria: "
+        for i in range(self.tamanho):
+            x = self.readbin(i)
+            if x == -1:
+                print 0,
+            else: print 1,
+        print ''
 
     #BEST FIT
     #varre a lista ligada e procura o MENOR espaco vazio para alocar o processo

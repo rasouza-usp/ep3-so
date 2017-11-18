@@ -68,7 +68,7 @@ def optimal():
 
 def fin_fout(processo, acesso, clock, mem_fisica, mem_virtual):
     print 'First-In, First-Out'
-    
+    remover=0
     #verifica qual eh a paina mais velha alocada
     
     #pego o tempo da primeira pagina da tabela de paginas para comecar

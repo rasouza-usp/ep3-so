@@ -25,7 +25,8 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                 elif execucao[1] == 'REMOVER':
                     # Aqui vamos tratar o caso de remover um processo
                     mem_virtual.remover_processo(execucao[3])
-                    mem_virtual.lista.show()
+                    #mem_virtual.lista.show()
+                    mem_virtual.dump()
                 elif execucao[1] == 'ALOCAR':
                     # Chegou um novo processo: manda pra memoria virtual
                     print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome 
@@ -39,11 +40,13 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                     mem_virtual.get_pagina(execucao[3])
                     #print 'olha as tabelas: '
                     #na hora do acesso varre a mem fisica e proc espaco se nao
-                    mem_virtual.lista.show()
-                    #mem_virtual.show_tabela()
+                    #mem_virtual.lista.show()
+                    mem_virtual.dump()
+                    mem_fisica.dump()
                 elif execucao[1] == 'ACESSO':
-                    # acesso a memoria
+                    # executa acesso a memoria
                     executa(execucao,substitui)
+                    mem_virtual.show_tabela()
                 count += 1
                 if count == len(listaExecucao):
                     break
@@ -74,10 +77,9 @@ def lista_de_execucao(processos):
             listaExecucao.append([execucao[1].tf,'REMOVER',-1,execucao[1]])
     return sorted(listaExecucao,key=itemgetter(0));
 
-# estrutura: [t0,p, PID, <processo>] 
+# [ t, ACAO, pos memoria, <processo>]
 def executa (execucao,substitui):
-    #print  'em t: ' + str(execucao[0]) + ' PID: ' + str(execucao[3].nome) + ' acessa posicao: ' + str(execucao[2])
-    print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome + ' em: ' + str(execucao[2])
+    print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' de ' + execucao[3].nome + ' em: ' + str(execucao[2])
     
     global pagefault
     
@@ -106,7 +108,6 @@ def executa (execucao,substitui):
         i = 0
         
         while i < numPags:
-
             #se existe uma pagina disponivel:
             if mem_fisica.tabela[i].get_procId() == -1:
 
@@ -115,31 +116,41 @@ def executa (execucao,substitui):
                 mem_fisica.tabela[i].set_r(1)
                 mem_fisica.tabela[i].set_tAcesso(clock)
                 mem_fisica.tabela[i].set_mapeada(pagina)
-                
+                                
                 #altera o bit presente/ausente
                 mem_virtual.tabela[pagina].set_presente(1)
                 
                 #grava o mapeamento a memoria virtual na fisica
                 mem_virtual.tabela[pagina].set_mapeada(i)
                 
+                # escreve posicoes ocupadas na memoria fisica
+                #ATENCAO: nao sei se isso esta certo
+                ocupa =  mem_fisica.tabela[i].fim -  mem_fisica.tabela[i].inicio + 1
+                print "\n\n\n"
+                print "PID: " + str(pid) + " foi pra mem_fisica" 
+                #mem_fisica.set_update2(POSICAO_INICIAL,pid,UNIDADES_OCUPADAS,tamPagina)
+                
                 alocou = 1
                 i = numPags
             i +=1
     
-        # se verificamos que toda a memoria fisica e nao encontrou espaco
+        # se nao consegui alocar a pagina, then ...
+        # Usando algoritmos de paginacao
         if alocou == 0:
             if substitui == 1:
+                print 'Optimal'
+            elif substitui == 2:
                 print 'First in First Out'
-                #fin_fout(execucao[3],pos,clock,mem_fisica,mem_virtual)
+                fin_fout(execucao[3],pos,clock,mem_fisica,mem_virtual)
+            elif substitui == 3:
+                print 'LRUv2'
+            elif substitui == 4:
+                print 'LRUv4'
                 
-    #Usando algoritmos de paginacao
     
-    
-   
 def set_memorias(fisica,virtual):
     global mem_fisica
     global mem_virtual
 
     mem_fisica = fisica
     mem_virtual = virtual
-    
