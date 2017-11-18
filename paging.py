@@ -12,6 +12,9 @@ class Page:
         self.tAcesso = -1
         self.m = 0
         self.r = 0
+
+    def show(self):
+        print 'Pg: [' + str(self.inicio) + '->'+str(self.fim)+']; pid: ' + str(self.procId)
         
     # retorna o valor do bit presente/ausente    
     def get_presente(self):
@@ -67,7 +70,6 @@ def optimal():
     print 'optimal'
 
 def fin_fout(processo, acesso, clock, mem_fisica, mem_virtual):
-    print 'First-In, First-Out'
     remover=0
     #verifica qual eh a paina mais velha alocada
     
