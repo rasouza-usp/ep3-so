@@ -1,4 +1,5 @@
 from memory import *
+from paging import *
 from operator import itemgetter
 import time
     
@@ -123,8 +124,11 @@ def executa (execucao):
                 i = numPags
             i +=1
     
-    # se verificamos que toda a memoria fisica e nao encontrou espaco
-    #if alocou == 0:
+        # se verificamos que toda a memoria fisica e nao encontrou espaco
+        if alocou == 0:
+            if substitui == 1:
+                print 'First in First Out'
+                #fin_fout(execucao[3],pos,clock,mem_fisica,mem_virtual)
                 
     #Usando algoritmos de paginacao
     
