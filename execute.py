@@ -24,7 +24,8 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                     #compactar()
                 elif execucao[1] == 'REMOVER':
                     # Aqui vamos tratar o caso de remover um processo
-                    remover_processo(execucao[3])
+                    mem_virtual.remover_processo(execucao[3])
+                    mem_virtual.lista.show()
                 elif execucao[1] == 'ALOCAR':
                     # Chegou um novo processo: manda pra memoria virtual
                     print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome 
@@ -38,7 +39,7 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                     mem_virtual.get_pagina(execucao[3])
                     #print 'olha as tabelas: '
                     #na hora do acesso varre a mem fisica e proc espaco se nao
-                    #mem_virtual.lista.show()
+                    mem_virtual.lista.show()
                     #mem_virtual.show_tabela()
                 elif execucao[1] == 'ACESSO':
                     # acesso a memoria

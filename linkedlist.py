@@ -111,7 +111,18 @@ class LinkedList(object):
             self.head = current.get_next()
         else:
             previous.set_next(current.get_next())
-
+    
+    # update do node livre
+    def node_update (self, data, newdata, inicio):
+        current = self.head
+        previous = None
+        found = False
+        while current and found is False:
+            if current.get_data() == data and current.get_inicio() == inicio:
+                current.set_data(newdata)
+                found = True
+            current = current.get_next()
+                
     # atualiza os tamanho no caso de dois espacos livres seguidos
     def delete_update(self, data):
         current = self.head

@@ -45,7 +45,7 @@ def main ():
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
-    set_espaco(2)
+    set_espaco(1)
     ex.set_memorias(mem_fisica,mem_virtual)
     
     # os elementos da lista tem o formato:
@@ -55,8 +55,6 @@ def main ():
     ex.simula (1,listaExecucao,espaco,substitui)
 
     #imprime toda a memoria
-    mem_virtual.get_lista().show()
-    #mem_virtual.removebin(2)
     mem_virtual.dump()
 
 # Funções

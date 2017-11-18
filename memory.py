@@ -258,5 +258,10 @@ class Memory:
         self.memfile.flush()
         mem.close()
 
-def remover_processo(processo):
-    print "t: " + str(processo.tf) + ' REMOVER ' + processo.nome
+    def remover_processo(self,processo):
+        print "t: " + str(processo.tf) + ' REMOVER ' + processo.nome + " com inicio em p: " + str(processo.base)
+        # atualiza posicoes da lista ligada
+        self.lista.node_update('P','L',processo.base)
+        self.lista.delete_update('L')
+        # libera espaco ocupado pelo processo na memoria
+        self.removebin(processo.get_pid())
