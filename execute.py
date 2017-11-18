@@ -124,11 +124,13 @@ def executa (execucao,substitui):
                 mem_virtual.tabela[pagina].set_mapeada(i)
                 
                 # escreve posicoes ocupadas na memoria fisica
-                #ATENCAO: nao sei se isso esta certo
+                #ATENCAO: nao consegui mapear/escrever as paginas na memoria fisica: TODO
                 ocupa =  mem_fisica.tabela[i].fim -  mem_fisica.tabela[i].inicio + 1
                 print "\n\n\n"
-                print "PID: " + str(pid) + " foi pra mem_fisica" 
-                #mem_fisica.set_update2(POSICAO_INICIAL,pid,UNIDADES_OCUPADAS,tamPagina)
+                print "PID: " + str(pid) + " foi pra pagina: " + str(i) + " da memoria fisica\n\n" 
+                posicao_inicial = i * tamPagina
+                unidades_ocupadas = posicao_inicial + tamPagina
+                #mem_fisica.set_update(posicao_inicial,pid,unidades_ocupadas,tamPagina)
                 
                 alocou = 1
                 i = numPags
