@@ -1,3 +1,5 @@
+from memory import *
+
 # algoritmo de substituicao de paginas
 
 global matriz_LRUv2
@@ -71,20 +73,27 @@ class Page:
 def optimal():
     print 'optimal'
 
-def fin_fout(processo, acesso, clock, mem_fisica, mem_virtual):
-    #verifica qual eh a paina mais velha alocada
+# First In First Out
+def fin_fout(mem_virtual,mem_fisica,indiceVirtual,clock,procId):
+
+    remover = 0
+    #verifica qual eh a pagina mais velha alocada
     
     #pego o tempo da primeira pagina da tabela de paginas para comecar
     old = mem_fisica.tabela[0].get_tAcesso()
-    remover = 0
     i = 0
     for pagina in mem_fisica.tabela:
         if pagina.get_tAcesso() < old:
             old = pagina.get_tAcesso()
             remover = i
         i += 1
-        
-    substitui_pagina(processo, acesso, clock, remover, mem_fisica, mem_virtual)
+    
+    #faz o bit presente da pagina que vai deixar de ser mapeada = 0
+    virt = mem_fisica.tabela[remover].get_mapeada()
+    mem_virtual.tabela[virt].set_presente(0)
+    
+    #mapeia a nova pagina
+    mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,remover, clock, procId)
 
 def LRUv2():
     print 'Least Recentely Used (Segunda versao)'
@@ -126,29 +135,31 @@ def LRUv2_pagina (npaginas):
 def LRUv4():
     print 'Least Recentely Used (Quarta versao)'
 
-
-# substitui a pagina de indice 'remover':
-def substitui_pagina(proc, pos, clock, remover, mem_fisica, mem_virtual):
-
-    # -> parei aqui! Tem que testar!
-    pid = proc.get_pid()
+#Recebe as memorias virtual e fisica e mapeia as paginas de acordo com os indices 
+def mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,indiceFisica, clock, procId):
     
-    # pega a qual pagina aquela posicao acessada pertence
-    tamPagina = mem_virtual.get_p()
-    pagina = pos/tamPagina
-        
-    # 1) alterar a memoria virtual para que a pagina removida tenha o bit presente/ausente = 0
-    indiceVirtual = mem_fisica.tabela[remover].get_mapeada()
-    mem_virtual.tabela[indiceVirtual].set_presente(0)
+    #ajusta pagina da memoria virtual
+    #Marca que a pagina virtual vai estar pesente
+    #mapeia a pagina da mem virtual na pagina da mem fisica
+    mem_virtual.tabela[indiceVirtual].set_presente(1)
+    mem_virtual.tabela[indiceVirtual].set_mapeada(indiceFisica)
     
-    mem_virtual.tabela[pagina].set_presente(1)
-    mem_virtual.tabela[pagina].set_mapeada(remover)
+    #ajusta pagina da memoria fisica
+    #faz o mapeamento inverso
+    #seta o bit r, clock e id do processo que usa a pagina
+    mem_fisica.tabela[indiceFisica].set_mapeada(indiceVirtual)
+    mem_fisica.tabela[indiceFisica].set_r(1)
+    mem_fisica.tabela[indiceFisica].set_tAcesso(clock)
+    mem_fisica.tabela[indiceFisica].set_procId(procId)
     
+    #escreve no arquivo da memoria fisica
     
-    # 2) alterar a pag da memoria fisica com os dados da pagina nova que vai entrar
-    mem_fisica.tabela[remover].set_procId(pid)
-    mem_fisica.tabela[remover].set_mapeada(pagina)
-    mem_fisica.tabela[remover].set_r(1)
-    mem_fisica.tabela[remover].set_tAcesso(clock)
+    #pega o tamanho da pagina
+    qtde = mem_virtual.get_p()
+    inicio = indiceFisica * qtde
     
+    for i in range(qtde):
+        pid = mem_virtual.readbin((indiceVirtual * qtde)+ i)
+        mem_fisica.writebin(inicio + i,pid)
+        mem_fisica.vetor[int(inicio) + i] = int(pid)
     

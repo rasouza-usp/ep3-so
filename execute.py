@@ -24,7 +24,7 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                     #compactar()
                 elif execucao[1] == 'REMOVER':
                     # Aqui vamos tratar o caso de remover um processo
-                    mem_virtual.remover_processo(execucao[3])
+                    mem_virtual.remover_processo(execucao[3],mem_fisica)
                     #mem_virtual.lista.show()
                     #mem_virtual.dump()
                 elif execucao[1] == 'ALOCAR':
@@ -53,13 +53,7 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                 execucao = listaExecucao[count]
         else:
             clock +=1
-        
-        #print 'MEMORIA VIRTUAL'    
-        #mem_virtual.show_tabela()
-        #print 'MEMORIA FISICA'    
-        #mem_fisica.show_tabela()
-        
-
+            
 # recebe os processos lidos de um arquivo trace e 
 # devolve uma lista ordenada por t com todas ACOES de manipualacao da memoria
 # os elementos da lista tem o seguinte formato:
@@ -108,33 +102,16 @@ def executa (execucao,substitui):
         for i in range(numPags):
             #se existe uma pagina disponivel:
             if mem_fisica.tabela[i].get_procId() == -1:
-
-                #altera os dados da pagina na mem fisica:
-                mem_fisica.tabela[i].set_procId(pid)
-                mem_fisica.tabela[i].set_r(1)
-                mem_fisica.tabela[i].set_tAcesso(clock)
-                mem_fisica.tabela[i].set_mapeada(pagina)
-                                
-                #altera o bit presente/ausente
-                mem_virtual.tabela[pagina].set_presente(1)
                 
-                #grava o mapeamento a memoria virtual na fisica
-                mem_virtual.tabela[pagina].set_mapeada(i)
+                print "\n\n\n"
+                print "PID: " + str(pid) + " foi pra pagina: " + str(i) + " da memoria fisica\n\n" 
                 
-                # escreve posicoes ocupadas na memoria fisica
-                #ATENCAO: nao consegui mapear/escrever as paginas na memoria fisica: TODO
-                ocupa =  mem_fisica.tabela[i].fim -  mem_fisica.tabela[i].inicio + 1
-                print "\nmapeando pagina:"
-                mem_fisica.tabela[i].show()
-                print "PID: " + str(pid) + " foi pra pagina: " + str(i) + " da memoria fisica\n" 
-                posicao_inicial = i * tamPagina
-                unidades_ocupadas = posicao_inicial + tamPagina
-                #mem_fisica.set_update(posicao_inicial,pid,unidades_ocupadas,tamPagina)
+                mapeia_virtual_to_fisica(mem_virtual,mem_fisica,pagina,i, clock, pid)
                 
                 # alocou a pagina; pode sair do loop
                 alocou = 1
                 break
-    
+        
         # se nao consegui alocar a pagina, then ...
         # Usando algoritmos de paginacao
         if alocou == 0:
@@ -144,13 +121,13 @@ def executa (execucao,substitui):
                 print 'Optimal'
             elif substitui == 2:
                 print 'First in First Out'
-                fin_fout(execucao[3],pos,clock,mem_fisica,mem_virtual)
+                fin_fout(mem_virtual,mem_fisica,pagina,clock,pid)
             elif substitui == 3:
                 print 'LRUv2'
             elif substitui == 4:
                 print 'LRUv4'
-                
-    
+        #mem_fisica.show_tabela()
+
 def set_memorias(fisica,virtual):
     global mem_fisica
     global mem_virtual

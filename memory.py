@@ -268,10 +268,24 @@ class Memory:
         self.memfile.flush()
         mem.close()
 
-    def remover_processo(self,processo):
+    def remover_processo(self,processo,mem_fisica):
         print "t: " + str(processo.tf) + ' REMOVER ' + processo.nome + " com inicio em p: " + str(processo.base)
         # atualiza posicoes da lista ligada
         self.lista.node_update('P','L',processo.base)
         self.lista.delete_update('L')
         # libera espaco ocupado pelo processo na memoria
         self.removebin(processo.get_pid())
+                
+        base = processo.get_base()
+        p = self.get_p()
+        npags = processo.get_reserva()/p
+        
+        pagina = base/p
+        for i in range(npags):
+            pagina += i
+            self.tabela[pagina].set_presente(0)
+            self.tabela[pagina].set_procId(-1)
+            paginaFisica = self.tabela[pagina].get_mapeada()
+            mem_fisica.tabela[paginaFisica].set_mapeada(-1)
+            mem_fisica.tabela[paginaFisica].set_procId(-1)
+            mem_fisica.tabela[paginaFisica].set_tAcesso(-1)
