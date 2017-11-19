@@ -85,7 +85,7 @@ class Memory:
     
     # ->>>>> APENAS PARA A MEMORIA VIRTUAL        
     #quando um processo chega ele eh carregado na tabela de paginas da mem virtual
-    def get_pagina(self,proc):
+    def set_pagina_tabela (self,proc):
         #pega o num de paginas que o processo vai utilizar
         numPag = int(proc.get_reserva()/self.p)
         base = proc.get_base()
@@ -119,7 +119,6 @@ class Memory:
             print('[' + str(i) + ' | ' +str(self.readbin(i))+']'), 
     
     def dump (self):
-        print "Status da memoria: "
         for i in range(self.tamanho):
             x = self.readbin(i)
             if x == -1:
@@ -227,12 +226,8 @@ class Memory:
         selecionados = sorted(requisitados,key=itemgetter(0));
         
         #remover os repetidos
-        
-        
         #pegar as 3 maiores reccorencias e montar as listas ligadas
-        
         #unir as listas em uma outra lista
-        
         
     def quick_fit(self, p):
         #tamanhos mais requisitados serao multiplos de s
@@ -275,6 +270,7 @@ class Memory:
         self.lista.delete_update('L')
         # libera espaco ocupado pelo processo na memoria
         self.removebin(processo.get_pid())
+        mem_fisica.removebin(processo.get_pid())
                 
         base = processo.get_base()
         p = self.get_p()

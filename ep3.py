@@ -2,7 +2,6 @@
 
 import os
 import sys
-import Queue
 
 from processo import *
 from memory import *
@@ -31,36 +30,34 @@ processos = []  # Lista de processos na forma (t0, Processo)
 espaco = 1      # Algoritmo de gerenciamento espaço livre
 substitui = 1   # Algoritmo de substituição de páginas
 
+
 ### MAIN
 def main ():
     if len(sys.argv) == 1: 
-        terminal() # Executar sem argumentos passa a ser um terminal
+        terminal()  # Executar sem argumentos passa a ser um terminal
     elif len(sys.argv) != 4: 
-        help() # Executar sem todos os argumentos necessários mostra ajuda
-
-    # DEBUG ---
+        help()      # Executar sem todos os argumentos necessários mostra ajuda
+        sys.exit()
+    
+    # BATCH MODE ---
     carrega(sys.argv[1])
-    mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
-    mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
-    
-    set_espaco(1)
-    set_substitui(3)
-    ex.set_memorias(mem_fisica,mem_virtual)
-    
-    # os elementos da lista tem o formato:
-    # [ t, ACAO, tam/pos memoria, <processo>]
+    set_espaco(int(sys.argv[2]))
+    set_substitui(int(sys.argv[3]))
     listaExecucao = ex.lista_de_execucao(processos)
     ex.simula (1,listaExecucao,espaco,substitui)
-    
-    # END DEBUG ---
+    # END BATCH MODE ---
 
 # Funções
 def help(): 
-    print """[USO] python ep3.py ARQUIVO ESPACO SUBSTITUI
+    print """[USO MODO BATCH] python ep3.py ARQUIVO ESPACO SUBSTITUI
 
     ARQUIVO - caminho do arquivo trace
     ESPACO - algoritmo de gerenciamento de espaco livre
-    SUBSTITUI - algoritmo de substituicao de pagina"""
+    SUBSTITUI - algoritmo de substituicao de pagina
+
+[USO MODO INTERATIVO] python ep3.py
+[ep3]: <comandos>
+"""
 
 def set_espaco(algoritmo):
     global espaco
@@ -70,6 +67,7 @@ def set_substitui(algoritmo):
     global substitui
     substitui = algoritmo
 
+# carrega arquivo trace em uma lista de Processos
 def carrega(arquivo):
     try:
         f = open(arquivo, "r")
@@ -80,7 +78,9 @@ def carrega(arquivo):
     global mem_fisica
     global mem_virtual
     global tamanhos
+    global processos
     
+    processos = []
     tamanhos = []
 
     # Define parametros da memória
@@ -89,10 +89,6 @@ def carrega(arquivo):
     #Cria os arquivos de memoria
     mem_fisica = Memory(int(memoria['total']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.mem')
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
-    
-    #print 'como ficou a tabela de paginas:'
-    #mem_virtual.show_tabela()
-    
     ex.set_memorias(mem_fisica,mem_virtual)
 
     # Timeline dos processos na memória
@@ -111,19 +107,29 @@ def carrega(arquivo):
         else:
             processos.append((int(line[0]), line[1]))
     f.close()
-    
 
+# modo terminal
 def terminal():
     while(True):
         command = (raw_input('[ep3]: ')).strip().split()
-        print command 
-        if command[0] == "sai": sys.exit(0)
-        if command[0] == "carrega":carrega(command[1])      
-        if command[0] == "espaco": set_espaco(command[1])
-        if command[0] == "substitui": set_substitui(command[1])
-        if command[0] == "executa": 
-            listaExecucao = ex.lista_de_execucao(processos)
-            ex.simula (command[1],listaExecucao,espaco,substitui)
+        if command:
+            if command[0] == "sai": 
+                sys.exit(0)
+            if command[0] == "carrega":
+                arquivo = command[1]
+            if command[0] == "espaco":
+                espaco = int(command[1])
+            if command[0] == "substitui": 
+                substitui = int(command[1])
+            if command[0] == "executa":
+                intervalo = int(command[1])
+                carrega(arquivo)
+                set_espaco(espaco)
+                set_substitui(substitui)
+                print 'Simulando: \nESPACO: ' + espacos[espaco] + ' | PAGINACAO: ' + paginacao[substitui]
+                listaExecucao = ex.lista_de_execucao(processos)
+                ex.simula (intervalo,listaExecucao,espaco,substitui)
+                listaExecucao = []
 
 if __name__ == "__main__":
     main()

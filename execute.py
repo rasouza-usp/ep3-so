@@ -2,8 +2,7 @@ from memory import *
 from paging import *
 from operator import itemgetter
 import time
-    
-    
+
 # itera em uma lista de execucoes; 
 def simula (intervalo,listaExecucao,espaco,substitui):
     global clock
@@ -21,7 +20,6 @@ def simula (intervalo,listaExecucao,espaco,substitui):
     execucao = listaExecucao[count]
     
     while True:
-        #print 'clock: ' + str(clock)
         if clock == execucao[0]:
             if isinstance(execucao[1], basestring):
                 #print execucao
@@ -31,8 +29,6 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                 elif execucao[1] == 'REMOVER':
                     # Aqui vamos tratar o caso de remover um processo
                     mem_virtual.remover_processo(execucao[3],mem_fisica)
-                    #mem_virtual.lista.show()
-                    #mem_virtual.dump()
                 elif execucao[1] == 'ALOCAR':
                     # Chegou um novo processo: manda pra memoria virtual
                     print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome 
@@ -42,22 +38,27 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                         mem_virtual.worst_fit(execucao[3])
                     elif espaco == 3:
                         mem_virtual.quick_fit(execucao[3])
-                        
-                    mem_virtual.get_pagina(execucao[3])
-                    #print 'olha as tabelas: '
-                    #na hora do acesso varre a mem fisica e proc espaco se nao
-                    #mem_virtual.lista.show()
-                    #mem_virtual.dump()
-                    #mem_fisica.dump()
+                    #carrega processo na tabela de pagina (mem virtual)
+                    mem_virtual.set_pagina_tabela (execucao[3])
                 elif execucao[1] == 'ACESSO':
-                    # executa acesso a memoria
+                    # executa ACESSO a memoria
                     executa(execucao,substitui)
-                    #mem_virtual.show_tabela()
                 count += 1
                 if count == len(listaExecucao):
+                    print 'Fim da Simulacao em t: ' + str(clock)
+                    print 'Estado da Memoria Virtual em t: ' + str(clock)
+                    mem_virtual.dump()
+                    print 'Estado da Memoria Fisica em t: ' + str(clock)
+                    mem_fisica.dump()
                     break
                 execucao = listaExecucao[count]
         else:
+            # imprime de <intervalo> em <intervalo>
+            if clock%intervalo == 0:
+                print 'Estado da Memoria Virtual em t: ' + str(clock)
+                mem_virtual.dump()
+                print 'Estado da Memoria Fisica em t: ' + str(clock)
+                mem_fisica.dump()
             clock +=1
             
 # recebe os processos lidos de um arquivo trace e 
@@ -77,8 +78,9 @@ def lista_de_execucao(processos):
             listaExecucao.append([execucao[1].tf,'REMOVER',-1,execucao[1]])
     return sorted(listaExecucao,key=itemgetter(0));
 
-# [ t, ACAO, pos memoria, <processo>]
-def executa (execucao,substitui):
+# executa um ACESSO a memoria
+# [tn, ACESSO, pn, <processo>]
+def executa (execucao, substitui):
     print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' de ' + execucao[3].nome + ' em: ' + str(execucao[2])
     
     global pagefault
@@ -134,6 +136,5 @@ def executa (execucao,substitui):
 def set_memorias(fisica,virtual):
     global mem_fisica
     global mem_virtual
-
     mem_fisica = fisica
     mem_virtual = virtual
