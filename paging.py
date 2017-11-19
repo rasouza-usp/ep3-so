@@ -16,6 +16,7 @@ class Page:
         self.tAcesso = -1
         self.m = 0
         self.r = 0
+        self.countLRUv4 = 0                 
 
     def show(self):
         print 'Pg: [' + str(self.inicio) + '->'+str(self.fim)+']; pid: ' + str(self.procId)
@@ -67,8 +68,15 @@ class Page:
     # altera o valor do tempo de acesso
     def set_tAcesso(self,indice):
         self.tAcesso = indice
-        
-        
+
+    def get_countLRUv4(self):
+        return self.countLRUv4
+    
+    # Define-se uma uma constante k que representa os k ultimos acessos
+    # essa consntante representara o contador de k bits 
+    def set_countLRUv4(self,k):
+        self.countLRUv4 += 1
+        self.countLRUv4 =  self.countLRUv4%k
         
 def optimal():
     print 'optimal'
@@ -91,10 +99,10 @@ def fin_fout(mem_virtual,mem_fisica,indiceVirtual,clock,procId):
     #faz o bit presente da pagina que vai deixar de ser mapeada = 0
     virt = mem_fisica.tabela[remover].get_mapeada()
     mem_virtual.tabela[virt].set_presente(0)
-    
     #mapeia a nova pagina
     mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,remover, clock, procId)
 
+# remove a pagina menos acessada de acordo com a matriz de acesso matriz_LRUv2
 def LRUv2 (mem_virtual,mem_fisica,indiceVirtual,clock,procId):
     global matriz_LRUv2
     npaginas = len(matriz_LRUv2)
@@ -145,8 +153,31 @@ def LRUv2_pagina (npaginas):
             maior = x
     return pagina
 
-def LRUv4():
+# remove a pagina menos acessada considerando os ultimos k=6 acessos
+def LRUv4 (mem_virtual,mem_fisica,indiceVirtual,clock,procId):
     print 'Least Recentely Used (Quarta versao)'
+    
+    # define pagina a ser removida baseado no contador de acessos das paginas
+    remover = LRUv4_pagina (mem_fisica)
+    
+    # faz o bit presente da pagina que vai deixar de ser mapeada = 0
+    virt = mem_fisica.tabela[remover].get_mapeada()
+    mem_virtual.tabela[virt].set_presente(0)
+    
+    # atualiza o contador de acesso countLRUv4 da pagina que vai pra memoria
+    # e mapeia a nova pagina
+    mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,remover, clock, procId)
+
+# devolve a pagina menos acessada considerando os ultimos k acessos
+def LRUv4_pagina (mem_fisica):
+    pagina = 0
+    menorAcesso = 1000
+    for i in range(len(mem_fisica.tabela)):
+        x = mem_fisica.tabela[i].get_countLRUv4()
+        if x < menorAcesso:
+            pagina = i
+            menorAcesso = x
+    return pagina
 
 #Recebe as memorias virtual e fisica e mapeia as paginas de acordo com os indices 
 def mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,indiceFisica, clock, procId):
@@ -160,6 +191,9 @@ def mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,indiceFisica, 
     mem_virtual.tabela[indiceVirtual].set_presente(1)
     mem_virtual.tabela[indiceVirtual].set_mapeada(indiceFisica)
     
+    # essa variavel soh eh usada no caso do LRUv4
+    mem_virtual.tabela[indiceVirtual].set_countLRUv4(6)
+    
     #ajusta pagina da memoria fisica
     #faz o mapeamento inverso
     #seta o bit r, clock e id do processo que usa a pagina
@@ -167,6 +201,8 @@ def mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,indiceFisica, 
     mem_fisica.tabela[indiceFisica].set_r(1)
     mem_fisica.tabela[indiceFisica].set_tAcesso(clock)
     mem_fisica.tabela[indiceFisica].set_procId(procId)
+    # essa variavel soh eh usada no caso do LRUv4
+    mem_fisica.tabela[indiceFisica].set_countLRUv4(6)
     
     #escreve no arquivo da memoria fisica
     

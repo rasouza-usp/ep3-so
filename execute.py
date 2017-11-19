@@ -113,7 +113,12 @@ def executa (execucao, substitui):
                 
                 # se LRUv2 marcar acesso da pagina na matriz de acesso
                 if substitui  == 3:
-                    matriz_LRUv2 = marca_matriz(i,numPags,matriz_LRUv2)
+                    matriz_LRUv2 = marca_matriz(i,numPags,matriz_LRUv2)                
+                # se LRUv4 marcar acesso da pagina no contador de acesso da pagina
+                # vai levar em consideracao os ultimos 6 acessos
+                elif substitui == 4:
+                    mem_fisica.tabela[i].set_countLRUv4(6)
+
                 # alocou a pagina; pode sair do loop
                 alocou = 1
                 break
@@ -130,7 +135,7 @@ def executa (execucao, substitui):
             elif substitui == 3:
                 LRUv2 (mem_virtual,mem_fisica,pagina,clock,pid)
             elif substitui == 4:
-                print 'LRUv4'
+                LRUv4 (mem_virtual,mem_fisica,pagina,clock,pid)
         #mem_fisica.show_tabela()
 
 def set_memorias(fisica,virtual):
