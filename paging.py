@@ -1,5 +1,7 @@
 # algoritmo de substituicao de paginas
 
+global matriz_LRUv2
+
 #classe page: representa uma pagina na tabela de paginas
 class Page:
     def __init__ (self, inicio, p):
@@ -70,11 +72,11 @@ def optimal():
     print 'optimal'
 
 def fin_fout(processo, acesso, clock, mem_fisica, mem_virtual):
-    remover=0
     #verifica qual eh a paina mais velha alocada
     
     #pego o tempo da primeira pagina da tabela de paginas para comecar
     old = mem_fisica.tabela[0].get_tAcesso()
+    remover = 0
     i = 0
     for pagina in mem_fisica.tabela:
         if pagina.get_tAcesso() < old:
@@ -86,6 +88,40 @@ def fin_fout(processo, acesso, clock, mem_fisica, mem_virtual):
 
 def LRUv2():
     print 'Least Recentely Used (Segunda versao)'
+
+# inicia matriz de tamanho npaginas X npaginas
+def matriz_LRUv2_init(npaginas):
+    global matriz_LRUv2
+    matriz_LRUv2 = [["0" for i in range(npaginas)] for j in range(npaginas)]
+    return matriz_LRUv2
+
+def marca_linha(linha,npaginas,matriz):
+    for j in range(npaginas):
+        matriz[linha][j] = '1'
+    return matriz
+
+def marca_coluna(coluna,npaginas,matriz):
+    for i in range(npaginas):
+        matriz[i][coluna] = '0'
+    return matriz
+
+def marca_matriz (pagina,npaginas):
+    global matriz_LRUv2
+    matriz_LRUv2 = marca_linha(pagina,npaginas,matriz_LRUv2)
+    matriz_LRUv2 = marca_coluna(pagina,npaginas,matriz_LRUv2)
+    #return matriz_LRUv2
+
+# devolve a pagina menos acessada de acordo com a matriz de acesso matriz_LRUv2
+def LRUv2_pagina (npaginas):
+    global matriz_LRUv2
+    maior = int(''.join(npaginas*['1']),2)
+    pagina = 0
+    for i in range(k):
+        x = int(''.join(matriz_LRUv2[i]),2)
+        if x < maior:
+            pagina = i 
+            maior = x
+    return pagina
 
 def LRUv4():
     print 'Least Recentely Used (Quarta versao)'
