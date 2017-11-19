@@ -44,16 +44,13 @@ def main ():
     mem_virtual = Memory(int(memoria['virtual']),int(memoria['s']),int(memoria['p']),'/tmp/ep3.vir')
     
     set_espaco(1)
-    set_substitui(2)
+    set_substitui(3)
     ex.set_memorias(mem_fisica,mem_virtual)
     
     # os elementos da lista tem o formato:
     # [ t, ACAO, tam/pos memoria, <processo>]
     listaExecucao = ex.lista_de_execucao(processos)
     ex.simula (1,listaExecucao,espaco,substitui)
-
-    #imprime toda a memoria
-    mem_virtual.dump2()
     
     # END DEBUG ---
 

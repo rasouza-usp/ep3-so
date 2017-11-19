@@ -95,8 +95,22 @@ def fin_fout(mem_virtual,mem_fisica,indiceVirtual,clock,procId):
     #mapeia a nova pagina
     mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,remover, clock, procId)
 
-def LRUv2():
-    print 'Least Recentely Used (Segunda versao)'
+def LRUv2 (mem_virtual,mem_fisica,indiceVirtual,clock,procId):
+    global matriz_LRUv2
+    npaginas = len(matriz_LRUv2)
+    
+    # define pagina a ser removida
+    remover = LRUv2_pagina (npaginas)
+    
+    #faz o bit presente da pagina que vai deixar de ser mapeada = 0
+    virt = mem_fisica.tabela[remover].get_mapeada()
+    mem_virtual.tabela[virt].set_presente(0)
+    
+    # marca o acesso na matriz_LRUv2 da nova pagina acessada que entrou no lugar da pagina removida
+    matriz_LRUv2 = marca_matriz (remover,npaginas, matriz_LRUv2)
+    
+    #mapeia a nova pagina
+    mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,remover, clock, procId)
 
 # inicia matriz de tamanho npaginas X npaginas
 def matriz_LRUv2_init(npaginas):
@@ -114,18 +128,17 @@ def marca_coluna(coluna,npaginas,matriz):
         matriz[i][coluna] = '0'
     return matriz
 
-def marca_matriz (pagina,npaginas):
-    global matriz_LRUv2
-    matriz_LRUv2 = marca_linha(pagina,npaginas,matriz_LRUv2)
-    matriz_LRUv2 = marca_coluna(pagina,npaginas,matriz_LRUv2)
-    #return matriz_LRUv2
+def marca_matriz (pagina,npaginas,matriz):
+    matriz = marca_linha(pagina,npaginas,matriz)
+    matriz = marca_coluna(pagina,npaginas,matriz)
+    return matriz
 
 # devolve a pagina menos acessada de acordo com a matriz de acesso matriz_LRUv2
 def LRUv2_pagina (npaginas):
     global matriz_LRUv2
     maior = int(''.join(npaginas*['1']),2)
     pagina = 0
-    for i in range(k):
+    for i in range(npaginas):
         x = int(''.join(matriz_LRUv2[i]),2)
         if x < maior:
             pagina = i 
@@ -137,6 +150,9 @@ def LRUv4():
 
 #Recebe as memorias virtual e fisica e mapeia as paginas de acordo com os indices 
 def mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,indiceFisica, clock, procId):
+    
+    #print 'Indice da Pagina da Virtual que vai entrar: ' + str(indiceVirtual) 
+    #print 'Indice da Pagina da Fisica que vai sair: ' + str(indiceFisica) 
     
     #ajusta pagina da memoria virtual
     #Marca que a pagina virtual vai estar pesente

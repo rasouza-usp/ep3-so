@@ -8,6 +8,12 @@ import time
 def simula (intervalo,listaExecucao,espaco,substitui):
     global clock
     global pagefault
+    global matriz_LRUv2
+
+    if substitui == 3:
+         global matriz_LRUv2
+         npaginas = int(mem_fisica.get_tamanho()/mem_fisica.get_p())
+         matriz_LRUv2 = matriz_LRUv2_init(npaginas)
     
     clock = 0
     count = 0 
@@ -76,6 +82,7 @@ def executa (execucao,substitui):
     print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' de ' + execucao[3].nome + ' em: ' + str(execucao[2])
     
     global pagefault
+    global matriz_LRUv2
     
     # encontra a posicao acessada = base + p
     pos = execucao[3].get_base()+execucao[2]
@@ -89,41 +96,37 @@ def executa (execucao,substitui):
     
     #caso nao esteja:
     if mem_virtual.tabela[pagina].get_presente() == 0:
-
        #pagefault
         pagefault +=1
         alocou = 0
-        
-        # passo 1: verifica se existe espaco livre na mem fisica pra mapear a pag
-        
         # pega o numero de paginas na memoria fisica
         numPags = int(mem_fisica.get_tamanho()/tamPagina)
+        # passo 1: verifica se existe espaco livre na mem fisica pra mapear a pag
         # busca espaco de uma pagina vazia na memoria
         for i in range(numPags):
             #se existe uma pagina disponivel:
             if mem_fisica.tabela[i].get_procId() == -1:
+                #print "PID: " + str(pid) + " foi pra pagina: " + str(i) + " da memoria fisica" 
+                mapeia_virtual_to_fisica(mem_virtual,mem_fisica,pagina,i, clock, pid)                
                 
-                print "\n\n\n"
-                print "PID: " + str(pid) + " foi pra pagina: " + str(i) + " da memoria fisica\n\n" 
-                
-                mapeia_virtual_to_fisica(mem_virtual,mem_fisica,pagina,i, clock, pid)
-                
+                # se LRUv2 marcar acesso da pagina na matriz de acesso
+                if substitui  == 3:
+                    matriz_LRUv2 = marca_matriz(i,numPags,matriz_LRUv2)
                 # alocou a pagina; pode sair do loop
                 alocou = 1
                 break
         
-        # se nao consegui alocar a pagina, then ...
+        # se nao conseguiu alocar a pagina, then ...
         # Usando algoritmos de paginacao
         if alocou == 0:
-            print 'Pagina quer entrar'
-            mem_virtual.tabela[pagina].show()
+            #print 'Pagina quer entrar'
+            #mem_virtual.tabela[pagina].show()
             if substitui == 1:
                 print 'Optimal'
             elif substitui == 2:
-                print 'First in First Out'
-                fin_fout(mem_virtual,mem_fisica,pagina,clock,pid)
+                fin_fout (mem_virtual,mem_fisica,pagina,clock,pid)
             elif substitui == 3:
-                print 'LRUv2'
+                LRUv2 (mem_virtual,mem_fisica,pagina,clock,pid)
             elif substitui == 4:
                 print 'LRUv4'
         #mem_fisica.show_tabela()
