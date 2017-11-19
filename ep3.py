@@ -26,10 +26,9 @@ paginacao = {1: 'Optimal',
              4: 'Least Recently Used v4'
 }
 
-processos = []  # Lista de processos na forma (t0, Processo)
-espaco = 1      # Algoritmo de gerenciamento espaço livre
-substitui = 1   # Algoritmo de substituição de páginas
-
+processos = []      # Lista de processos na forma (t0, Processo)
+global espaco       # Algoritmo de gerenciamento espaço livre
+global substitui    # Algoritmo de substituição de páginas
 
 ### MAIN
 def main ():
@@ -44,6 +43,7 @@ def main ():
     set_espaco(int(sys.argv[2]))
     set_substitui(int(sys.argv[3]))
     listaExecucao = ex.lista_de_execucao(processos)
+    print 'Simulando: \nESPACO: ' + espacos[espaco] + ' | PAGINACAO: ' + paginacao[substitui]
     ex.simula (1,listaExecucao,espaco,substitui)
     # END BATCH MODE ---
 

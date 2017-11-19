@@ -9,6 +9,10 @@ def simula (intervalo,listaExecucao,espaco,substitui):
     global pagefault
     global matriz_LRUv2
 
+    timetotal = 0;
+    t_i = 0
+    t_f = 0
+
     if substitui == 3:
          global matriz_LRUv2
          npaginas = int(mem_fisica.get_tamanho()/mem_fisica.get_p())
@@ -31,7 +35,9 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                     mem_virtual.remover_processo(execucao[3],mem_fisica)
                 elif execucao[1] == 'ALOCAR':
                     # Chegou um novo processo: manda pra memoria virtual
-                    print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome 
+                    print "t: " + str(execucao[0]) + ' ' + execucao[1] + ' para ' + execucao[3].nome
+                    # disparando o cronometro 
+                    t_i = time.time()
                     if espaco == 1:
                         mem_virtual.best_fit(execucao[3])
                     elif espaco == 2:
@@ -40,9 +46,17 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                         mem_virtual.quick_fit(execucao[3])
                     #carrega processo na tabela de pagina (mem virtual)
                     mem_virtual.set_pagina_tabela (execucao[3])
+                    # para o cronometro e soma o tempo
+                    t_f = time.time()
+                    timetotal += (t_f - t_i)
                 elif execucao[1] == 'ACESSO':
+                    # disparando o cronometro 
+                    t_i = time.time()
                     # executa ACESSO a memoria
                     executa(execucao,substitui)
+                    # para o cronometro e soma o tempo
+                    t_f = time.time()
+                    timetotal += (t_f - t_i)
                 count += 1
                 if count == len(listaExecucao):
                     print 'Fim da Simulacao em t: ' + str(clock)
@@ -60,6 +74,9 @@ def simula (intervalo,listaExecucao,espaco,substitui):
                 print 'Estado da Memoria Fisica em t: ' + str(clock)
                 mem_fisica.dump()
             clock +=1
+    
+    print 'Tempo para encontrar espacos na memoria durante toda simulacao: ' + str(timetotal)
+    print '# Pagefault: ' + str(pagefault)
             
 # recebe os processos lidos de um arquivo trace e 
 # devolve uma lista ordenada por t com todas ACOES de manipualacao da memoria
