@@ -118,12 +118,20 @@ class Memory:
             #print('Posicao ' + str(i) + ' PID: ' +str(self.readbin(i)))
             print('[' + str(i) + ' | ' +str(self.readbin(i))+']'), 
     
+    #Mostra Bit Map
     def dump (self):
         for i in range(self.tamanho):
             x = self.readbin(i)
             if x == -1:
                 print 0,
             else: print 1,
+        print ''
+        
+    #Mostra Status da memoria
+    def dump_status (self):
+        for i in range(self.tamanho):
+            x = self.readbin(i)
+            print x,
         print ''
 
     #BEST FIT
@@ -251,7 +259,31 @@ class Memory:
     def compactar(self):
         print 'compactando memoria'
         mem = self.memfile
-        k = 0;
+        p = self.p
+        npags = self.tamanho/p
+        k = 0
+        
+        #crio uma tabela auxiliar:
+        novaTabela = []
+        
+        #copia paginas nao vazias
+        for j in range(npags):            
+            if self.tabela[j].get_procId() != -1:
+                novaTabela.append(self.tabela[j])
+                #define a nova base e limite do processo
+                
+                
+                
+        #copias paginas vazias
+        for j in range(npags):            
+            if self.tabela[j].get_procId() == -1:
+                #copio a tabela
+                novaTabela.append(self.tabela[j])
+        
+        self.tabela = novaTabela
+        
+            
+        
         for i in range(self.tamanho):
             x = readbin(mem,i)
             if (x != -1):
@@ -261,7 +293,6 @@ class Memory:
             writebin(self.memfile,k,-1)
             k += 1
         self.memfile.flush()
-        mem.close()
 
     def remover_processo(self,processo,mem_fisica):
         print "t: " + str(processo.tf) + ' REMOVER ' + processo.nome + " com inicio em p: " + str(processo.base)

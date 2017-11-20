@@ -69,9 +69,15 @@ def simula (intervalo,listaExecucao,espaco,substitui):
         else:
             # imprime de <intervalo> em <intervalo>
             if clock%intervalo == 0:
+                print ''
                 print 'Estado da Memoria Virtual em t: ' + str(clock)
+                mem_virtual.dump_status()
+                print 'Bit Map da Memoria Virtual em t: ' + str(clock)
                 mem_virtual.dump()
+                print ''
                 print 'Estado da Memoria Fisica em t: ' + str(clock)
+                mem_fisica.dump_status()
+                print 'Bit Map da Memoria Fisca em t: ' + str(clock)
                 mem_fisica.dump()
             clock +=1
     
