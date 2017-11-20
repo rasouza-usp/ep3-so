@@ -5,13 +5,15 @@
 #
 #
 
+TRACEFILE=${1:-teste.txt}
+
 # best-fit & First In, First Out 
 results='' 
 for i in `seq 1 30`; do
-    tempo=`python ep3.py teste.txt 1 2 | grep 'Tempo' | awk '{print $NF}'`
+    tempo=`python ep3.py ${TRACEFILE} 1 2 | grep 'Tempo' | awk '{print $NF}'`
     results=${results}'  '${tempo} 
 done
-PAGEFAULT=`python ep3.py teste.txt 1 2 | grep 'Pagefault' | awk '{print $NF}'`
+PAGEFAULT=`python ep3.py ${TRACEFILE} 1 2 | grep 'Pagefault' | awk '{print $NF}'`
 
 media_std=$(
     for i in  ${results}; do echo $i;done |
@@ -26,10 +28,10 @@ echo "Pagefault: " $PAGEFAULT
 # best-fit & LRUv2
 results='' 
 for i in `seq 1 30`; do
-    tempo=`python ep3.py teste.txt 1 3 | grep 'Tempo' | awk '{print $NF}'`
+    tempo=`python ep3.py ${TRACEFILE} 1 3 | grep 'Tempo' | awk '{print $NF}'`
     results=${results}'  '${tempo} 
 done
-PAGEFAULT=`python ep3.py teste.txt 1 3 | grep 'Pagefault' | awk '{print $NF}'`
+PAGEFAULT=`python ep3.py ${TRACEFILE} 1 3 | grep 'Pagefault' | awk '{print $NF}'`
 
 media_std=$(
     for i in  ${results}; do echo $i;done |
@@ -45,10 +47,10 @@ echo "Pagefault: " $PAGEFAULT
 # best-fit & LRUv4
 esults='' 
 for i in `seq 1 30`; do
-    tempo=`python ep3.py teste.txt 1 4 | grep 'Tempo' | awk '{print $NF}'`
+    tempo=`python ep3.py ${TRACEFILE} 1 4 | grep 'Tempo' | awk '{print $NF}'`
     results=${results}'  '${tempo} 
 done
-PAGEFAULT=`python ep3.py teste.txt 1 4 | grep 'Pagefault' | awk '{print $NF}'`
+PAGEFAULT=`python ep3.py ${TRACEFILE} 1 4 | grep 'Pagefault' | awk '{print $NF}'`
 
 media_std=$(
     for i in  ${results}; do echo $i;done |
@@ -63,10 +65,10 @@ echo "Pagefault: " $PAGEFAULT
 # worst-fit & First In, First Out 
 results='' 
 for i in `seq 1 30`; do
-    tempo=`python ep3.py teste.txt 2 2 | grep 'Tempo' | awk '{print $NF}'`
+    tempo=`python ep3.py ${TRACEFILE} 2 2 | grep 'Tempo' | awk '{print $NF}'`
     results=${results}'  '${tempo} 
 done
-PAGEFAULT=`python ep3.py teste.txt 2 2 | grep 'Pagefault' | awk '{print $NF}'`
+PAGEFAULT=`python ep3.py ${TRACEFILE} 2 2 | grep 'Pagefault' | awk '{print $NF}'`
 
 media_std=$(
     for i in  ${results}; do echo $i;done |
@@ -81,10 +83,10 @@ echo "Pagefault: " $PAGEFAULT
 # worst-fit & LRUv2
 results='' 
 for i in `seq 1 30`; do
-    tempo=`python ep3.py teste.txt 2 3 | grep 'Tempo' | awk '{print $NF}'`
+    tempo=`python ep3.py ${TRACEFILE} 2 3 | grep 'Tempo' | awk '{print $NF}'`
     results=${results}'  '${tempo} 
 done
-PAGEFAULT=`python ep3.py teste.txt 2 3 | grep 'Pagefault' | awk '{print $NF}'`
+PAGEFAULT=`python ep3.py ${TRACEFILE} 2 3 | grep 'Pagefault' | awk '{print $NF}'`
 
 media_std=$(
     for i in  ${results}; do echo $i;done |
@@ -100,10 +102,10 @@ echo "Pagefault: " $PAGEFAULT
 # worst-fit & LRUv4
 esults='' 
 for i in `seq 1 30`; do
-    tempo=`python ep3.py teste.txt 2 4 | grep 'Tempo' | awk '{print $NF}'`
+    tempo=`python ep3.py ${TRACEFILE} 2 4 | grep 'Tempo' | awk '{print $NF}'`
     results=${results}'  '${tempo} 
 done
-PAGEFAULT=`python ep3.py teste.txt 2 4 | grep 'Pagefault' | awk '{print $NF}'`
+PAGEFAULT=`python ep3.py ${TRACEFILE} 2 4 | grep 'Pagefault' | awk '{print $NF}'`
 
 media_std=$(
     for i in  ${results}; do echo $i;done |
