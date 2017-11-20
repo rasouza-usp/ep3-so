@@ -44,7 +44,7 @@ $ tree -d
 - |--- relatorio.tex
 - |--- relatorio.pdf
 - |--- apresentacao.pdf
-|--- leiame
+|--- LEIAME.txt
 _______________________
 
 Observacoes
