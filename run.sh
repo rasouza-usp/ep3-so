@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-python ep3.py trace1.txt 1 2
+python ep3.py teste.txt 1 2
