@@ -1,13 +1,13 @@
+# -*- coding: utf-8 -*-
 #/*
 # *
 # * Bruno Ferrero n.USP: 3690142  Curso: BCC
 # * Rodrigo Alves n.USP 6800149   Curso: BCC
-# * Taís Pinheiro n.USP 7580421   Curso: BCC
+# * Tais Pinheiro n.USP 7580421   Curso: BCC
 # *
 # * Data: Nov/2017
 # *
 # */
-# -*- coding: utf-8 -*-
 
 import os
 import sys
@@ -37,7 +37,7 @@ paginacao = {1: 'Optimal',
 
 processos = []      # Lista de processos na forma (t0, Processo)
 global espaco       # Algoritmo de gerenciamento espaço livre
-global substitui    # Algoritmo de substituição de páginas
+global substitui    # Algoritmo de substituicao de paginas
 
 ### MAIN
 def main ():
