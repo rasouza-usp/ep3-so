@@ -1,7 +1,13 @@
-# algoritmos de gerencia de espaco livre
+#/*
+# *
+# * Bruno Ferrero n.USP: 3690142  Curso: BCC
+# * Rodrigo Alves n.USP 6800149   Curso: BCC
+# * Taís Pinheiro n.USP 7580421   Curso: BCC
+# *
+# * Data: Nov/2017
+# *
+# */
 
-# o controle de espaco livre tem que ser feito com lista ligada: ver aula15.pdf
-# Nao vai dar pra usar o bitmap
 from struct import pack,unpack
 from linkedlist import *
 from paging import *

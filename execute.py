@@ -1,3 +1,13 @@
+#/*
+# *
+# * Bruno Ferrero n.USP: 3690142  Curso: BCC
+# * Rodrigo Alves n.USP 6800149   Curso: BCC
+# * Taís Pinheiro n.USP 7580421   Curso: BCC
+# *
+# * Data: Nov/2017
+# *
+# */
+
 from memory import *
 from paging import *
 from operator import itemgetter

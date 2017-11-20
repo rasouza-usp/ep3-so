@@ -1,12 +1,12 @@
-/*
- *
- * Bruno Ferrero n.USP: 3690142  Curso: BCC
- * Rodrigo Alves n.USP 6800149   Curso: BCC
- * Taís Pinheiro n.USP 7580421   Curso: BCC
- *
- * Data: Nov/2017
- *
- */
+#/*
+# *
+# * Bruno Ferrero n.USP: 3690142  Curso: BCC
+# * Rodrigo Alves n.USP 6800149   Curso: BCC
+# * Taís Pinheiro n.USP 7580421   Curso: BCC
+# *
+# * Data: Nov/2017
+# *
+# */
 
 
 
@@ -20,6 +20,7 @@ Para compilar:
 
 
 Para executar o ep3.py no modo terminal:
+========================================
  	 
 $ python ep3.py
 [ep3]: espaco 1
@@ -27,7 +28,8 @@ $ python ep3.py
 [ep3:] carrega trace.txt
 [ep3:] executa 5
 
-# batch mode para gerar os resultados
+Para executar em batch mode para gerar os resultados
+====================================================
 $ python ep3.py ARQUIVO ESPACO SUBSTITUI
 
 
