@@ -277,11 +277,14 @@ class Memory:
         npags = processo.get_reserva()/p
         
         pagina = base/p
-        for i in range(npags):
-            pagina += i
+        i = 0
+        while i < npags:            
+            print 'alterando a pagina virtual: ' + str(pagina)
             self.tabela[pagina].set_presente(0)
             self.tabela[pagina].set_procId(-1)
             paginaFisica = self.tabela[pagina].get_mapeada()
             mem_fisica.tabela[paginaFisica].set_mapeada(-1)
             mem_fisica.tabela[paginaFisica].set_procId(-1)
             mem_fisica.tabela[paginaFisica].set_tAcesso(-1)
+            pagina += 1
+            i += 1

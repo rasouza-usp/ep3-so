@@ -209,9 +209,11 @@ def mapeia_virtual_to_fisica(mem_virtual,mem_fisica,indiceVirtual,indiceFisica, 
     #pega o tamanho da pagina
     qtde = mem_virtual.get_p()
     inicio = indiceFisica * qtde
+    pos = indiceVirtual * qtde
     
     for i in range(qtde):
-        pid = mem_virtual.readbin((indiceVirtual * qtde)+ i)
-        mem_fisica.writebin(inicio + i,pid)
-        mem_fisica.vetor[int(inicio) + i] = int(pid)
-    
+        pid = mem_virtual.readbin(pos)
+        mem_fisica.writebin(inicio,pid)
+        mem_fisica.vetor[int(inicio)] = int(pid)
+        pos += 1
+        inicio += 1
